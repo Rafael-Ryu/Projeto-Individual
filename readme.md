@@ -1,6 +1,6 @@
 # ReservaFácil
 
-Este projeto é uma aplicação Node.js seguindo o padrão MVC (Model-View-Controller), utilizando PostgreSQL como banco de dados, para o sistema ReservaFácil.
+Este projeto é uma aplicação web, utilizando Node.js, seguindo o padrão MVC (Model-View-Controller) e utilizando PostgreSQL como banco de dados.
 
 ## Requisitos
 
