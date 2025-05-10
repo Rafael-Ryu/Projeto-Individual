@@ -37,7 +37,7 @@ Este projeto visa solucionar esses problemas oferecendo uma plataforma centraliz
 ---
 
 <div align = 'left'>
-<img src = 'assets/Gustavo.png' width="25%" height="25%">
+<img src = '../assets/Gustavo.png' width="25%" height="25%">
 </div>
 
 **Nome:** Gustavo Carlos
