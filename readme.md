@@ -89,7 +89,7 @@ Estrutura de Diretórios
 * **`package.json`**: Metadados do projeto e dependências ([package.json](package.json)).
 * **`jest.config.js`**: Configuração do Jest ([jest.config.js](jest.config.js)).
 * **`.env`**: Arquivo para variáveis de ambiente.
-* **`PI-WAD.md`**: Documento da Aplicação Web ([PI-WAD.md](PI-WAD.md)).
+* **`PI-WAD.md`**: Documento da Aplicação Web ([documentos/PI-WAD.md](PI-WAD.md)).
 
 Licença
 -------
