@@ -105,6 +105,7 @@ O ReservaFácil permite que o Gustavo visualize rapidamente todas as salas dispo
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
+Para que o sistema funcione de maneira ágil e confiável – gerenciando usuários, salas, equipamentos e agendamentos em tempo real – uma estrutura de dados bem definida é essencial. A escolha por um banco de dados relacional é, assim, fundamental para garantir a integridade, organização e o acesso rápido às informações que dão vida ao ReservaFácil.
 
 ### 1. Diagrama Entidade-Relacionamento
 
