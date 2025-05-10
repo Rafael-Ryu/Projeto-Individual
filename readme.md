@@ -74,6 +74,7 @@ Estrutura de Diretórios
 
 * **`config/`**: Configurações do banco de dados ([config/db.js](config/db.js)).
 * **`controllers/`**: Controladores da aplicação (ex: [controllers/userController.js](controllers/userController.js)).
+* **`documentos/`**: Documento da Aplicação Web ([documentos/PI-WAD.md](documentos/PI-WAD.md)).
 * **`models/`**: Modelos da aplicação (ex: [models/userModel.js](models/userModel.js)).
 * **`routes/`**: Rotas da aplicação (ex: [routes/userRoutes.js](routes/userRoutes.js), [routes/frontRoutes.js](routes/frontRoutes.js)).
 * **`services/`**: Lógica de serviço (ex: [services/userService.js](services/userService.js)).
@@ -89,7 +90,6 @@ Estrutura de Diretórios
 * **`package.json`**: Metadados do projeto e dependências ([package.json](package.json)).
 * **`jest.config.js`**: Configuração do Jest ([jest.config.js](jest.config.js)).
 * **`.env`**: Arquivo para variáveis de ambiente.
-* **`PI-WAD.md`**: Documento da Aplicação Web ([documentos/PI-WAD.md](PI-WAD.md)).
 
 Licença
 -------
