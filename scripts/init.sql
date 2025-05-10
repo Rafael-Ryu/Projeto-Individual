@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS departamentos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   nome VARCHAR(100) NOT NULL,
   descricao TEXT,
-  manager_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
+  gerente_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

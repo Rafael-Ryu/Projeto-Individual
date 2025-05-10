@@ -105,9 +105,264 @@ O ReservaFácil permite que o Gustavo visualize rapidamente todas as salas dispo
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
-*Posicione aqui os diagramas de modelos relacionais do seu banco de dados, apresentando todos os esquemas de tabelas e suas relações. Utilize texto para complementar suas explicações, se necessário.*
 
-*Posicione também o modelo físico com o Schema do BD (arquivo .sql)*
+### 1. Diagrama Entidade-Relacionamento
+
+<div align = 'center'>
+<img src = '../assets/DiagramaRelacional.png'>
+</div>
+
+O diagrama acima mostra a estrutura completa do banco de dados, com todas as tabelas e suas relações.
+
+### Esquema de Banco de Dados do ReservaFácil
+
+## Tabelas e Suas Relações
+
+### 2. Usuários e Autenticação
+
+#### Tabela: `usuarios`
+- **Descrição**: Armazena informações dos usuários do sistema
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `nome` (VARCHAR)
+- `email` (VARCHAR, UNIQUE)
+- `password_hash` (VARCHAR)
+- `telefone` (VARCHAR)
+- `imagem_perfil` (VARCHAR)
+- `departamento` (VARCHAR)
+- `esta_ativo` (BOOLEAN)
+- `criado_em`, `atualizado_em`, `ultimo_login` (TIMESTAMP)
+
+#### Tabela: `cargos`
+- **Descrição**: Define os diferentes níveis de acesso no sistema
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `nome` (VARCHAR, UNIQUE)
+- `descricao` (VARCHAR)
+- `nivel_permissao` (INTEGER)
+- `criado_em` (TIMESTAMP)
+
+#### Tabela: `usuario_cargos`
+- **Descrição**: Relacionamento N:N entre usuários e cargos
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `usuario_id` (UUID, FK → usuarios.id)
+- `cargo_id` (UUID, FK → cargos.id)
+- `atribuido_em`, `expira_em` (TIMESTAMP)
+
+**Relacionamento**: Um usuário pode ter múltiplos cargos (papéis) no sistema, e cada cargo pode ser atribuído a múltiplos usuários.
+
+### 3. Estrutura Física
+
+#### Tabela: `edificios`
+- **Descrição**: Representa os prédios onde as salas estão localizadas
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `nome` (VARCHAR)
+- `endereco` (VARCHAR)
+- `descricao` (TEXT)
+- `andar` (INTEGER)
+- `horario_abertura`, `horario_fechamento` (TIME)
+- `esta_ativo` (BOOLEAN)
+- `criado_em` (TIMESTAMP)
+
+#### Tabela: `departamentos`
+- **Descrição**: Representa os departamentos responsáveis pelas salas
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `nome` (VARCHAR)
+- `descricao` (TEXT)
+- `gerente_id` (UUID, FK → usuarios.id)
+- `criado_em` (TIMESTAMP)
+
+**Relacionamento**: Um departamento é gerenciado por um usuário (gerente_id).
+
+### 4. Salas e Equipamentos
+
+#### Tabela: `salas`
+- **Descrição**: Representa os espaços que podem ser reservados
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `nome` (VARCHAR)
+- `construcao_id` (UUID, FK → edificios.id)
+- `departamento_id` (UUID, FK → departamentos.id)
+- `floor` (INTEGER)
+- `capacidade` (INTEGER)
+- `descricao` (TEXT)
+- `tipo_sala` (VARCHAR)
+- `esta_ativo` (BOOLEAN)
+- `criado_em` (TIMESTAMP)
+
+#### Tabela: `equipamento`
+- **Descrição**: Representa os equipamentos disponíveis
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `nome` (VARCHAR)
+- `descricao` (TEXT)
+- `category` (VARCHAR)
+- `criado_em` (TIMESTAMP)
+
+#### Tabela: `sala_equipamento`
+- **Descrição**: Relacionamento N:N entre salas e equipamentos
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `sala_id` (UUID, FK → salas.id)
+- `equipamento_id` (UUID, FK → equipamento.id)
+- `quantidade` (INTEGER)
+- `status` (VARCHAR)
+- `last_maintenance` (TIMESTAMP)
+
+#### Tabela: `imagem_sala`
+- **Descrição**: Armazena imagens das salas
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `sala_id` (UUID, FK → salas.id)
+- `url_imagem` (VARCHAR)
+- `descricao` (VARCHAR)
+- `uploaded_em` (TIMESTAMP)
+
+**Relacionamentos**:
+
+- Uma sala pertence a um edifício (construcao_id)
+- Uma sala é gerenciada por um departamento (departamento_id)
+- Uma sala pode ter múltiplos equipamentos
+- Uma sala pode ter múltiplas imagens
+
+### 5. Sistema de Reservas
+
+#### Tabela: `reservas`
+- **Descrição**: Representa as reservas de salas feitas pelos usuários
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `sala_id` (UUID, FK → salas.id)
+- `usuario_id` (UUID, FK → usuarios.id)
+- `tempo_inicio`, `tempo_fim` (TIMESTAMP)
+- `titulo` (VARCHAR)
+- `descricao` (TEXT)
+- `status` (VARCHAR)
+- `numero_participantes` (INTEGER)
+- `e_recorrente` (BOOLEAN)
+- `padrao_recorrencia` (VARCHAR)
+- `criado_em`, `atualizado_em`, `cancelado_em` (TIMESTAMP)
+
+#### Tabela: `participantes_reservas`
+- **Descrição**: Representa os usuários convidados para uma reserva
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `reserva_id` (UUID, FK → reservas.id)
+- `usuario_id` (UUID, FK → usuarios.id)
+- `cargo` (VARCHAR)
+- `confirmado` (BOOLEAN)
+- `convidado_em`, `confirmado_em` (TIMESTAMP)
+
+#### Tabela: `historico_reserva`
+- **Descrição**: Registra alterações nas reservas
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `reserva_id` (UUID, FK → reservas.id)
+- `usuario_id` (UUID, FK → usuarios.id)
+- `acao` (VARCHAR)
+- `status_anterior`, `status_novo` (VARCHAR)
+- `criado_em` (TIMESTAMP)
+
+**Relacionamentos**:
+
+- Uma reserva é feita para uma sala específica (sala_id)
+- Uma reserva é criada por um usuário (usuario_id)
+- Uma reserva pode ter múltiplos participantes
+- Todas as alterações em uma reserva são registradas
+
+### 6. Funcionalidades Sociais e Notificações
+
+#### Tabela: `notificacoes`
+- **Descrição**: Armazena notificações enviadas aos usuários
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `usuario_id` (UUID, FK → usuarios.id)
+- `tipo` (VARCHAR)
+- `titulo` (VARCHAR)
+- `message` (TEXT)
+- `is_read` (BOOLEAN)
+- `criado_em`, `read_em` (TIMESTAMP)
+
+#### Tabela: `favoritos`
+- **Descrição**: Armazena as salas favoritas dos usuários
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `usuario_id` (UUID, FK → usuarios.id)
+- `sala_id` (UUID, FK → salas.id)
+- `criado_em` (TIMESTAMP)
+
+#### Tabela: `reviews`
+- **Descrição**: Armazena avaliações das salas feitas pelos usuários
+- **Campos principais**:
+
+- `id` (UUID, PK)
+- `usuario_id` (UUID, FK → usuarios.id)
+- `sala_id` (UUID, FK → salas.id)
+- `avaliacao` (INTEGER)
+- `comentario` (TEXT)
+- `criado_em`, `atualizado_em` (TIMESTAMP)
+
+**Relacionamentos**:
+
+- Um usuário recebe notificações
+- Um usuário pode favoritar múltiplas salas
+- Um usuário pode avaliar múltiplas salas
+
+## Funcionalidades Avançadas do Banco de Dados
+
+### 1. Índices
+
+O banco de dados utiliza índices para otimizar consultas frequentes, como:
+
+- Busca de reservas por sala (`idx_reservas_sala_id`)
+- Busca de reservas por usuário (`idx_reservas_usuario_id`)
+- Busca de reservas por período (`idx_reservas_tempo_inicio`, `idx_reservas_tempo_fim`)
+- Busca de salas por edifício (`idx_salas_construcao_id`)
+- Busca de salas por departamento (`idx_salas_departamento_id`)
+- Busca de salas por tipo (`idx_salas_tipo_sala`)
+
+### 2. Triggers e Funções Automatizadas
+
+#### Atualização de Timestamps
+- `atualizar_atualizado_em_coluna()`: Atualiza automaticamente o campo `atualizado_em` quando um registro é modificado
+
+#### Registro de Histórico
+- `log_mudanca_reserva()`: Registra automaticamente todas as alterações em reservas na tabela `historico_reserva`
+
+#### Verificação de Conflitos
+- `checkar_conflito_reserva()`: Verifica se há conflitos de horário ao criar ou modificar uma reserva
+
+#### Sistema de Notificações Automáticas
+- `notificar_criacao_reserva()`: Envia notificação quando uma reserva é criada
+- `notificar_reserva_cancelada()`: Envia notificações quando uma reserva é cancelada
+- `notificar_participante_adicionado()`: Envia notificação quando um usuário é adicionado como participante de uma reserva
+
+### 3. Constraints
+
+O banco de dados utiliza constraints para garantir a integridade dos dados:
+
+- Chaves estrangeiras para garantir integridade referencial
+- Verificações para garantir dados válidos (ex: avaliação entre 1 e 5)
+- Unicidade para evitar duplicações (ex: um usuário não pode avaliar a mesma sala duas vezes)
+- Verificação de tempo (ex: tempo_fim > tempo_inicio)
+
+### [Schema do DB](../scripts/init.sql)
 
 ### 3.1.1 BD e Models (Semana 5)
 *Descreva aqui os Models implementados no sistema web*
