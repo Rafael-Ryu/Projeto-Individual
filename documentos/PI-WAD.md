@@ -381,7 +381,22 @@ O banco de dados utiliza constraints para garantir a integridade dos dados:
 
 ### 3.3. Wireframes (Semana 03)
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização).*
+Os wireframes a seguir representam a estrutura visual inicial. Eles foram criados para definir a disposição dos elementos nas principais telas da aplicação, focando na usabilidade e na experiência do usuário.
+
+### Tela de Login
+<div align = 'center'>
+<img src = '../assets/telaLogin.png'>
+</div>
+
+### Tela do Dashboard
+<div align = 'center'>
+<img src = '../assets/dashboard.png'>
+</div>
+
+### Tela das Minhas Reservas
+<div align = 'center'>
+<img src = '../assets/minhasReservas.png'>
+</div>
 
 ### 3.4. Guia de estilos (Semana 05)
 
