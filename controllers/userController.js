@@ -1,5 +1,3 @@
-// controllers/userController.js
-
 const userService = require('../services/userService');
 
 const getAllUsers = async (req, res) => {
@@ -26,8 +24,7 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { name, email } = req.body;
-    const newUser = await userService.createUser(name, email);
+    const newUser = await userService.createUser(req.body);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -36,12 +33,11 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { name, email } = req.body;
-    const updatedUser = await userService.updateUser(req.params.id, name, email);
+    const updatedUser = await userService.updateUser(req.params.id, req.body);
     if (updatedUser) {
       res.status(200).json(updatedUser);
     } else {
-      res.status(404).json({ error: 'Usuário não encontrado' });
+      res.status(404).json({ error: 'Usuário não encontrado para atualização ou nenhum dado fornecido para alterar' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -52,9 +48,9 @@ const deleteUser = async (req, res) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.id);
     if (deletedUser) {
-      res.status(200).json(deletedUser);
+      res.status(200).json({ message: 'Usuário excluído com sucesso', user: deletedUser });
     } else {
-      res.status(404).json({ error: 'Usuário não encontrado' });
+      res.status(404).json({ error: 'Usuário não encontrado para exclusão' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

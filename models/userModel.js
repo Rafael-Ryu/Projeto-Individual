@@ -2,34 +2,55 @@ const db = require('../config/db');
 
 class User {
   static async getAll() {
-    const result = await db.query('SELECT * FROM users');
+    const result = await db.query('SELECT * FROM usuarios');
     return result.rows;
   }
 
   static async getById(id) {
-    const result = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    const result = await db.query('SELECT * FROM usuarios WHERE id = $1', [id]);
     return result.rows[0];
   }
 
   static async create(data) {
-    const result = await db.query(
-      'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
-      [data.name, data.email]
-    );
+    const { nome, email, password_hash, telefone, imagem_perfil, departamento, esta_ativo } = data;
+    const query = `
+      INSERT INTO usuarios (nome, email, password_hash, telefone, imagem_perfil, departamento, esta_ativo)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING *
+    `;
+    const values = [nome, email, password_hash, telefone, imagem_perfil, departamento, esta_ativo === undefined ? true : esta_ativo];
+    const result = await db.query(query, values);
     return result.rows[0];
   }
 
   static async update(id, data) {
-    const result = await db.query(
-      'UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING *',
-      [data.name, data.email, id]
-    );
+    const { nome, email, password_hash, telefone, imagem_perfil, departamento, esta_ativo } = data;
+    const fields = [];
+    const values = [];
+    let paramCount = 1;
+
+    if (nome !== undefined) { fields.push(`nome = $${paramCount++}`); values.push(nome); }
+    if (email !== undefined) { fields.push(`email = $${paramCount++}`); values.push(email); }
+    if (password_hash !== undefined) { fields.push(`password_hash = $${paramCount++}`); values.push(password_hash); }
+    if (telefone !== undefined) { fields.push(`telefone = $${paramCount++}`); values.push(telefone); }
+    if (imagem_perfil !== undefined) { fields.push(`imagem_perfil = $${paramCount++}`); values.push(imagem_perfil); }
+    if (departamento !== undefined) { fields.push(`departamento = $${paramCount++}`); values.push(departamento); }
+    if (esta_ativo !== undefined) { fields.push(`esta_ativo = $${paramCount++}`); values.push(esta_ativo); }
+    
+    if (fields.length === 0) {
+      return this.getById(id);
+    }
+
+    values.push(id);
+    const query = `UPDATE usuarios SET ${fields.join(', ')}, atualizado_em = CURRENT_TIMESTAMP WHERE id = $${paramCount} RETURNING *`;
+    
+    const result = await db.query(query, values);
     return result.rows[0];
   }
 
   static async delete(id) {
-    const result = await db.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
-    return result.rowCount > 0;
+    const result = await db.query('DELETE FROM usuarios WHERE id = $1 RETURNING *', [id]);
+    return result.rows[0]; 
   }
 }
 

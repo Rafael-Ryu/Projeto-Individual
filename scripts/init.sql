@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   telefone VARCHAR(20),
   imagem_perfil VARCHAR(255),
   departamento VARCHAR(100),
-  esta_emivo BOOLEAN DEFAULT TRUE,
+  esta_ativo BOOLEAN DEFAULT TRUE,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   ultimo_login TIMESTAMP
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS edificios (
   andar INTEGER NOT NULL,
   horario_abertura TIME,
   horario_fechamento TIME,
-  esta_emivo BOOLEAN DEFAULT TRUE,
+  esta_ativo BOOLEAN DEFAULT TRUE,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS salas (
   capacidade INTEGER NOT NULL,
   descricao TEXT,
   tipo_sala VARCHAR(50) NOT NULL,
-  esta_emivo BOOLEAN DEFAULT TRUE,
+  esta_ativo BOOLEAN DEFAULT TRUE,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
