@@ -368,7 +368,7 @@ O banco de dados utiliza constraints para garantir a integridade dos dados:
 ### 3.1.1 BD e Models (Semana 5)
 *Descreva aqui os Models implementados no sistema web*
 
-### 3.2. Arquitetura (Semana 5)
+### 3.2. Arquitetura
 
 A arquitetura MVC (Model-View-Controller) é um padrão de design de software utilizado para organizar aplicações. Ela divide a aplicação em três componentes principais interconectados, cada um com responsabilidades distintas:
 
