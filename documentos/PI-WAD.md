@@ -30,7 +30,7 @@ Este projeto visa solucionar esses problemas oferecendo uma plataforma centraliz
 
 ## <a name="c2"></a>2. Visão Geral da Aplicação Web
 
-### 2.1. Personas (Semana 01)
+### 2.1. Personas
 
 ---
 **PERSONA: Gustavo Carlos**
@@ -68,7 +68,7 @@ Este projeto visa solucionar esses problemas oferecendo uma plataforma centraliz
 **Solução (Como o ReservaFácil o ajuda):**
 O ReservaFácil permite que o Gustavo visualize rapidamente todas as salas disponíveis na universidade, filtre por capacidade ou equipamentos (ex: sala com projetor para ensaiar apresentações) e reserve um horário em poucos cliques, diretamente do seu celular ou computador. Ele pode planejar suas sessões de estudo e trabalhos em grupo com antecedência, garantindo um local adequado de forma prática e rápida, reduzindo seu estresse e frustração.
 
-### 2.2. User Stories (Semana 01)
+### 2.2. User Stories
 
 **US01 |** Como estudante, quero visualizar a disponibilidade das salas em tempo real, para que eu possa planejar meus estudos e encontrar um local adequado rapidamente.
 
@@ -103,7 +103,7 @@ O ReservaFácil permite que o Gustavo visualize rapidamente todas as salas dispo
 
 ## <a name="c3"></a>3. Projeto da Aplicação Web
 
-### 3.1. Modelagem do banco de dados  (Semana 3)
+### 3.1. Modelagem do banco de dados
 
 Para que o sistema funcione de maneira ágil e confiável – gerenciando usuários, salas, equipamentos e agendamentos em tempo real – uma estrutura de dados bem definida é essencial. A escolha por um banco de dados relacional é, assim, fundamental para garantir a integridade, organização e o acesso rápido às informações que dão vida ao ReservaFácil.
 
@@ -370,16 +370,19 @@ O banco de dados utiliza constraints para garantir a integridade dos dados:
 
 ### 3.2. Arquitetura (Semana 5)
 
-*Posicione aqui o diagrama de arquitetura da sua solução de aplicação web. Atualize sempre que necessário.*
+A arquitetura MVC (Model-View-Controller) é um padrão de design de software utilizado para organizar aplicações. Ela divide a aplicação em três componentes principais interconectados, cada um com responsabilidades distintas:
 
-**Instruções para criação do diagrama de arquitetura**  
-- **Model**: A camada que lida com a lógica de negócios e interage com o banco de dados.
-- **View**: A camada responsável pela interface de usuário.
-- **Controller**: A camada que recebe as requisições, processa as ações e atualiza o modelo e a visualização.
+*   **Model (Modelo):** Representa os dados e a lógica de negócios da aplicação. É responsável por acessar e manipular os dados (de um banco de dados) e por aplicar as regras de negócios. Ele não tem conhecimento direto da interface do usuário.
+*   **View (Visão):** É a camada de apresentação, responsável por exibir os dados ao usuário. Ela obtém os dados do Modelo (através do Controlador) e os renderiza de forma visual. No contexto de uma aplicação web, a View é frequentemente composta por HTML, CSS e JavaScript.
+*   **Controller (Controlador):** Atua como um intermediário entre o Model e a View. Ele recebe as entradas do usuário (requisições HTTP), interage com o Model para processar essas entradas e atualiza a View para refletir as mudanças ou apresentar os resultados.
 
-*Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
+Essa separação de responsabilidades promove um código mais organizado, modular e fácil de manter, além de facilitar o desenvolvimento paralelo das diferentes camadas e a reutilização de componentes.
 
-### 3.3. Wireframes (Semana 03)
+<div align = 'center'>
+<img src = '../assets/arquiteturaMVC.png' height="150%">
+</div>
+
+### 3.3. Wireframes
 
 Os wireframes a seguir representam a estrutura visual inicial. Eles foram criados para definir a disposição dos elementos nas principais telas da aplicação, focando na usabilidade e na experiência do usuário.
 
@@ -407,7 +410,7 @@ Os wireframes a seguir representam a estrutura visual inicial. Eles foram criado
 
 *Posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização).*
 
-### 3.6. WebAPI e endpoints (Semana 05)
+### 3.6. WebAPI e endpoints (Semana 5)
 
 *Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*  
 
