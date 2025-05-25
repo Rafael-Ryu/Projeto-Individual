@@ -365,8 +365,25 @@ O banco de dados utiliza constraints para garantir a integridade dos dados:
 
 ### [Schema do DB](../scripts/init.sql)
 
-### 3.1.1 BD e Models (Semana 5)
-*Descreva aqui os Models implementados no sistema web*
+### 3.1.1 BD e Models
+
+Os models são responsáveis por interagir com o banco de dados, facilitando a manipulação dos dados. A seguir, uma descrição dos models implementados:
+
+*   **`userModel.js`**: Gerencia os dados dos usuários, como informações de perfil, autenticação e estado da conta. Corresponde à tabela `usuarios`.
+*   **`cargoModel.js`**: Define os diferentes cargos ou papéis que um usuário pode ter no sistema, controlando níveis de permissão. Corresponde à tabela `cargos`.
+*   **`usuarioCargoModel.js`**: Representa a relação entre usuários e seus respectivos cargos, permitindo que um usuário tenha múltiplos papéis. Corresponde à tabela `usuario_cargos`.
+*   **`edificioModel.js`**: Gerencia as informações sobre os edifícios onde as salas estão localizadas, incluindo endereço e horários de funcionamento. Corresponde à tabela `edificios`.
+*   **`departamentoModel.js`**: Armazena dados dos departamentos responsáveis pelas salas ou que agrupam usuários. Corresponde à tabela `departamentos`.
+*   **`salaModel.js`**: Representa as salas que podem ser reservadas, incluindo detalhes como capacidade, tipo e localização (edifício e andar). Corresponde à tabela `salas`.
+*   **`equipamentoModel.js`**: Gerencia os tipos de equipamentos que podem estar disponíveis nas salas (ex: projetor, lousa). Corresponde à tabela `equipamento`.
+*   **`salaEquipamentoModel.js`**: Define a relação entre salas e os equipamentos que elas contêm, incluindo quantidade e status. Corresponde à tabela `sala_equipamento`.
+*   **`imagemSalaModel.js`**: Armazena URLs e descrições de imagens associadas às salas. Corresponde à tabela `imagem_sala`.
+*   **`reservaModel.js`**: Gerencia as informações das reservas de salas, incluindo horários, usuário solicitante e status. Corresponde à tabela `reservas`.
+*   **`participantesReservasModel.js`**: Modela os participantes convidados ou adicionados a uma reserva específica. Corresponde à tabela `participantes_reservas`.
+*   **`historicoReservaModel.js`**: Registra o histórico de alterações e eventos relacionados a uma reserva. Corresponde à tabela `historico_reserva`.
+*   **`notificacoesModel.js`**: Gerencia as notificações enviadas aos usuários sobre eventos no sistema (ex: confirmação de reserva). Corresponde à tabela `notificacoes`.
+*   **`favoritoModel.js`**: Permite que usuários marquem salas como favoritas para fácil acesso. Corresponde à tabela `favoritos`.
+*   **`reviewModel.js`**: Armazena as avaliações e comentários feitos pelos usuários sobre as salas. Corresponde à tabela `reviews`.
 
 ### 3.2. Arquitetura
 
@@ -437,5 +454,3 @@ Os wireframes a seguir representam a estrutura visual inicial. Eles foram criado
 ## <a name="c5"></a>5. Referências
 
 _Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
-
----
