@@ -420,31 +420,60 @@ Os wireframes a seguir representam a estrutura visual inicial. Eles foram criado
 
 ### 3.4. Guia de estilos (Semana 05)
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução.*
+O guia de estilos é fundamental para manter a consistência visual e a identidade da marca da aplicação.
 
+**Elementos do Guia de Estilos:**
+*   **Paleta de Cores:** Define as cores primárias, secundárias e de destaque utilizadas na interface.
+*   **Tipografia:** Especifica as fontes, tamanhos e pesos para diferentes elementos textuais.
+*   **Componentes de UI:** Descreve o design de botões, campos de formulário, cards, e outros elementos interativos.
+*   **Iconografia:** Apresenta o conjunto de ícones utilizados na aplicação.
+*   **Layout e Espaçamento:** Diretrizes sobre a organização dos elementos na tela e o espaçamento entre eles.
+
+A imagem a seguir exibe o Guia de Estilos consolidado:
+
+<div align = 'center'>
+<img src = '../assets/prototipos/Guia de Estilos.png' alt='Guia de Estilos do ReservaFácil' width='70%'>
+</div>
 
 ### 3.5. Protótipo de alta fidelidade (Semana 05)
 
-*Posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização).*
+Estes protótipos visam simular a experiência final do usuário com a aplicação.
+
+Os protótipos incluem as seguintes telas:
+
+1.  **Tela de Login:** Interface para autenticação dos usuários.
+    <div align = 'center'>
+    <img src = '../assets/prototipos/Login.png' alt='Protótipo da Tela de Login' width='70%'>
+    </div>
+
+2.  **Dashboard:** Painel principal acessado após o login, com resumo de atividades e navegação.
+    <div align = 'center'>
+    <img src = '../assets/prototipos/Dashboard.png' alt='Protótipo da Tela Dashboard' width='70%'>
+    </div>
+
+3.  **Minhas Reservas:** Área onde o usuário pode visualizar e gerenciar suas reservas de salas.
+    <div align = 'center'>
+    <img src = '../assets/prototipos/Minhas Reservas.png' alt='Protótipo da Tela Minhas Reservas' width='70%'>
+    </div>
 
 ### 3.6. WebAPI e endpoints (Semana 5)
 
 *Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*  
 
-### 3.7 Interface e Navegação (Semana 07)
+
+### 3.7. Interface e Navegação (Semana 07)
 
 *Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
-
 ---
 
 ## <a name="c4"></a>4. Desenvolvimento da Aplicação Web (Semana 8)
 
-### 4.1 Demonstração do Sistema Web (Semana 8)
+### 4.1. Demonstração do Sistema Web (Semana 8)
 
 *VIDEO: Insira o link do vídeo demonstrativo nesta seção*
 *Descreva e ilustre aqui o desenvolvimento do sistema web completo, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
 
-### 4.2 Conclusões e Trabalhos Futuros (Semana 8)
+### 4.2. Conclusões e Trabalhos Futuros (Semana 8)
 
 *Indique pontos fortes e pontos a melhorar de maneira geral.*
 *Relacione também quaisquer outras ideias que você tenha para melhorias futuras.*
