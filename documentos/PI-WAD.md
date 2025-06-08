@@ -458,12 +458,132 @@ Os protótipos incluem as seguintes telas:
 
 ### 3.6. WebAPI e endpoints (Semana 5)
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*  
+A WebAPI do ReservaFácil expõe os seguintes endpoints para interagir com os recursos do sistema. Todos os endpoints de API são prefixados com `/api`.
 
+#### 1. Cargos (`/api/cargos`)
+- `GET /`: Lista todos os cargos.
+- `GET /:id`: Obtém um cargo específico pelo ID.
+- `POST /`: Cria um novo cargo.
+- `PUT /:id`: Atualiza um cargo existente pelo ID.
+- `DELETE /:id`: Deleta um cargo existente pelo ID.
 
-### 3.7. Interface e Navegação (Semana 07)
+#### 2. Departamentos (`/api/departamentos`)
+- `POST /`: Cria um novo departamento.
+- `GET /`: Lista todos os departamentos.
+- `GET /:id`: Obtém um departamento específico pelo ID.
+- `PUT /:id`: Atualiza um departamento existente pelo ID.
+- `DELETE /:id`: Deleta um departamento existente pelo ID.
 
-*Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
+#### 3. Edifícios (`/api/edificios`)
+- `POST /`: Cria um novo edifício.
+- `GET /`: Lista todos os edifícios.
+- `GET /:id`: Obtém um edifício específico pelo ID.
+- `PUT /:id`: Atualiza um edifício existente pelo ID.
+- `DELETE /:id`: Deleta um edifício existente pelo ID.
+
+#### 4. Equipamentos (`/api/equipamentos`)
+- `POST /`: Cria um novo equipamento.
+- `GET /`: Lista todos os equipamentos.
+- `GET /:id`: Obtém um equipamento específico pelo ID.
+- `PUT /:id`: Atualiza um equipamento existente pelo ID.
+- `DELETE /:id`: Deleta um equipamento existente pelo ID.
+
+#### 5. Favoritos (`/api/favoritos`)
+- `POST /`: Adiciona uma sala aos favoritos de um usuário.
+- `GET /`: Lista todos os favoritos.
+- `GET /usuario/:usuarioId`: Lista os favoritos de um usuário específico.
+- `GET /:id`: Obtém um registro de favorito específico pelo ID.
+- `DELETE /:id`: Remove um favorito pelo seu ID.
+- `DELETE /usuario/:usuarioId/sala/:salaId`: Remove uma sala específica dos favoritos de um usuário.
+
+#### 6. Histórico de Reservas (`/api/historico-reservas`)
+- `GET /`: Lista todos os históricos de reservas.
+- `GET /:id`: Obtém um histórico de reserva específico pelo ID.
+- `GET /reserva/:reservaId`: Lista o histórico de uma reserva específica.
+- `POST /`: Cria um novo registro de histórico de reserva.
+- `PUT /:id`: Atualiza um registro de histórico de reserva.
+- `DELETE /:id`: Deleta um registro de histórico de reserva.
+
+#### 7. Imagens de Sala (`/api/imagens-sala`)
+- `POST /`: Adiciona uma nova imagem para uma sala.
+- `GET /`: Lista todas as imagens de salas.
+- `GET /:id`: Obtém uma imagem de sala específica pelo ID.
+- `GET /sala/:sala_id`: Lista todas as imagens de uma sala específica.
+- `PUT /:id`: Atualiza uma imagem de sala.
+- `DELETE /:id`: Deleta uma imagem de sala.
+
+#### 8. Notificações (`/api/notificacoes`)
+- `GET /usuario/:usuarioId`: Lista as notificações de um usuário específico.
+- `POST /`: Cria uma nova notificação.
+- `PUT /:id/lida`: Marca uma notificação específica como lida.
+- `PUT /usuario/:usuarioId/lidas`: Marca todas as notificações de um usuário como lidas.
+- `DELETE /:id`: Deleta uma notificação.
+
+#### 9. Participantes de Reservas (`/api/participantes-reservas`)
+- `POST /`: Adiciona um participante a uma reserva.
+- `GET /`: Lista todos os participantes de todas as reservas.
+- `GET /:id`: Obtém um registro de participante específico pelo ID.
+- `GET /reserva/:reservaId`: Lista os participantes de uma reserva específica.
+- `PUT /:id`: Atualiza informações de um participante em uma reserva.
+- `DELETE /:id`: Remove um participante de uma reserva.
+
+#### 10. Reservas (`/api/reservas`)
+- `POST /`: Cria uma nova reserva.
+- `GET /`: Lista todas as reservas.
+- `GET /:id`: Obtém uma reserva específica pelo ID.
+- `GET /usuario/:usuarioId`: Lista as reservas de um usuário específico.
+- `PUT /:id`: Atualiza uma reserva existente.
+- `PATCH /:id/cancelar`: Cancela uma reserva.
+- `DELETE /:id`: Deleta uma reserva.
+
+#### 11. Reviews (`/api/reviews`)
+- `POST /`: Cria uma nova avaliação (review) para uma sala.
+- `GET /`: Lista todas as avaliações.
+- `GET /:id`: Obtém uma avaliação específica pelo ID.
+- `GET /sala/:sala_id`: Lista as avaliações de uma sala específica.
+- `GET /usuario/:usuario_id`: Lista as avaliações feitas por um usuário específico.
+- `PUT /:id`: Atualiza uma avaliação existente.
+- `DELETE /:id`: Deleta uma avaliação.
+
+#### 12. Sala-Equipamentos (`/api/sala-equipamentos`)
+- `POST /`: Associa um equipamento a uma sala.
+- `GET /`: Lista todas as associações de salas e equipamentos.
+- `GET /:id`: Obtém uma associação específica pelo ID.
+- `GET /sala/:salaId`: Lista os equipamentos de uma sala específica.
+- `GET /equipamento/:equipamentoId`: Lista as salas que possuem um equipamento específico.
+- `PUT /:id`: Atualiza uma associação sala-equipamento.
+- `DELETE /:id`: Remove uma associação sala-equipamento pelo ID.
+- `DELETE /sala/:salaId/equipamento/:equipamentoId`: Remove um equipamento específico de uma sala específica.
+
+#### 13. Salas (`/api/salas`)
+- `POST /`: Cria uma nova sala.
+- `GET /`: Lista todas as salas.
+- `GET /:id`: Obtém uma sala específica pelo ID.
+- `PUT /:id`: Atualiza uma sala existente.
+- `DELETE /:id`: Deleta uma sala.
+
+#### 14. Usuários (`/api/usuarios`)
+- `GET /`: Lista todos os usuários.
+- `GET /:id`: Obtém um usuário específico pelo ID.
+- `POST /`: Cria um novo usuário (registro).
+- `PUT /:id`: Atualiza um usuário existente.
+- `DELETE /:id`: Deleta um usuário.
+
+#### 15. Usuário-Cargos (`/api/usuario-cargos`)
+- `POST /`: Associa um cargo a um usuário.
+- `GET /`: Lista todas as associações de usuários e cargos.
+- `GET /:id`: Obtém uma associação específica pelo ID.
+- `GET /usuario/:usuarioId`: Lista os cargos de um usuário específico.
+- `GET /cargo/:cargoId`: Lista os usuários que possuem um cargo específico.
+- `PUT /:id`: Atualiza uma associação usuário-cargo.
+- `DELETE /:id`: Remove uma associação usuário-cargo pelo ID.
+- `DELETE /usuario/:usuarioId/cargo/:cargoId`: Remove um cargo específico de um usuário específico.
+
+#### Rotas de Frontend (Serviço de Páginas)
+As seguintes rotas são usadas para servir as páginas da aplicação e não são endpoints de API de dados:
+- `GET /`: Renderiza a página inicial.
+- `GET /about`: Renderiza a página "Sobre".
+
 ---
 
 ## <a name="c4"></a>4. Desenvolvimento da Aplicação Web (Semana 8)
