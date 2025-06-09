@@ -1,0 +1,412 @@
+<!-- Relatórios Page -->
+<div class="min-h-screen bg-gray-50" x-data="relatoriosData()">
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Relatórios e Analytics</h1>
+        <p class="text-gray-600">Visualize estatísticas e relatórios do sistema de reservas</p>
+      </div>
+
+      <!-- Report Filters -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Período</label>
+            <select 
+              x-model="filters.periodo"
+              @change="loadReports()"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="last-7-days">Últimos 7 dias</option>
+              <option value="last-30-days">Últimos 30 dias</option>
+              <option value="last-3-months">Últimos 3 meses</option>
+              <option value="last-6-months">Últimos 6 meses</option>
+              <option value="last-year">Último ano</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Departamento</label>
+            <select 
+              x-model="filters.departamento"
+              @change="loadReports()"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todos os departamentos</option>
+              <option value="ti">TI</option>
+              <option value="rh">RH</option>
+              <option value="vendas">Vendas</option>
+              <option value="marketing">Marketing</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Sala</label>
+            <select 
+              x-model="filters.tipoSala"
+              @change="loadReports()"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todos os tipos</option>
+              <option value="reuniao">Reunião</option>
+              <option value="auditorio">Auditório</option>
+              <option value="treinamento">Treinamento</option>
+              <option value="workshop">Workshop</option>
+            </select>
+          </div>
+
+          <div class="flex items-end">
+            <button 
+              @click="exportReport()"
+              class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              Exportar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Metrics -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Total de Reservas</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="metrics.totalReservas"></p>
+              <p class="text-xs text-green-600" x-text="'+' + metrics.crescimentoReservas + '% vs período anterior'"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-green-100 rounded-lg">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Taxa de Ocupação</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="metrics.taxaOcupacao + '%'"></p>
+              <p class="text-xs text-blue-600" x-text="metrics.horasUtilizadas + ' horas utilizadas'"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-purple-100 rounded-lg">
+              <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM9 3a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Usuários Ativos</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="metrics.usuariosAtivos"></p>
+              <p class="text-xs text-gray-500" x-text="'de ' + metrics.totalUsuarios + ' usuários'"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-red-100 rounded-lg">
+              <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Taxa de Cancelamento</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="metrics.taxaCancelamento + '%'"></p>
+              <p class="text-xs text-red-600" x-text="metrics.reservasCanceladas + ' canceladas'"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Usage by Room Type -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Uso por Tipo de Sala</h3>
+          <div class="space-y-4">
+            <template x-for="tipo in usagePorTipo" :key="tipo.nome">
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span x-text="tipo.nome"></span>
+                  <span x-text="tipo.reservas + ' reservas'"></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    class="bg-blue-600 h-2 rounded-full"
+                    :style="'width: ' + tipo.percentage + '%'"
+                  ></div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- Peak Hours -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Horários de Pico</h3>
+          <div class="space-y-4">
+            <template x-for="hora in horariosPico" :key="hora.hora">
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span x-text="hora.hora"></span>
+                  <span x-text="hora.reservas + ' reservas'"></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    class="bg-green-600 h-2 rounded-full"
+                    :style="'width: ' + hora.percentage + '%'"
+                  ></div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Users and Rooms -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Top Users -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900">Usuários Mais Ativos</h3>
+          </div>
+          <div class="divide-y divide-gray-200">
+            <template x-for="(usuario, index) in topUsuarios" :key="usuario.id">
+              <div class="p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div 
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium"
+                    :class="{
+                      'bg-yellow-500': index === 0,
+                      'bg-gray-400': index === 1,
+                      'bg-orange-500': index === 2,
+                      'bg-blue-500': index > 2
+                    }"
+                    x-text="index + 1"
+                  ></div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900" x-text="usuario.nome"></p>
+                    <p class="text-xs text-gray-500" x-text="usuario.departamento"></p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-medium text-gray-900" x-text="usuario.reservas + ' reservas'"></p>
+                  <p class="text-xs text-gray-500" x-text="usuario.horas + ' horas'"></p>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- Top Rooms -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900">Salas Mais Utilizadas</h3>
+          </div>
+          <div class="divide-y divide-gray-200">
+            <template x-for="(sala, index) in topSalas" :key="sala.id">
+              <div class="p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div 
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium"
+                    :class="{
+                      'bg-yellow-500': index === 0,
+                      'bg-gray-400': index === 1,
+                      'bg-orange-500': index === 2,
+                      'bg-blue-500': index > 2
+                    }"
+                    x-text="index + 1"
+                  ></div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900" x-text="sala.nome"></p>
+                    <p class="text-xs text-gray-500" x-text="sala.localizacao"></p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-medium text-gray-900" x-text="sala.reservas + ' reservas'"></p>
+                  <p class="text-xs text-gray-500" x-text="sala.ocupacao + '% ocupação'"></p>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Atividade Recente</h3>
+        </div>
+        <div class="divide-y divide-gray-200">
+          <template x-for="atividade in atividadeRecente" :key="atividade.id">
+            <div class="p-4 flex items-center space-x-4">
+              <div 
+                class="p-2 rounded-full"
+                :class="{
+                  'bg-green-100': atividade.tipo === 'criacao',
+                  'bg-red-100': atividade.tipo === 'cancelamento',
+                  'bg-blue-100': atividade.tipo === 'modificacao'
+                }"
+              >
+                <svg 
+                  class="h-4 w-4"
+                  :class="{
+                    'text-green-600': atividade.tipo === 'criacao',
+                    'text-red-600': atividade.tipo === 'cancelamento',
+                    'text-blue-600': atividade.tipo === 'modificacao'
+                  }"
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    x-show="atividade.tipo === 'criacao'"
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  ></path>
+                  <path 
+                    x-show="atividade.tipo === 'cancelamento'"
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                  <path 
+                    x-show="atividade.tipo === 'modificacao'"
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm text-gray-900" x-text="atividade.descricao"></p>
+                <p class="text-xs text-gray-500" x-text="atividade.usuario + ' • ' + atividade.tempo"></p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function relatoriosData() {
+    return {
+      loading: true,
+      filters: {
+        periodo: 'last-30-days',
+        departamento: '',
+        tipoSala: ''
+      },
+      metrics: {
+        totalReservas: 0,
+        crescimentoReservas: 0,
+        taxaOcupacao: 0,
+        horasUtilizadas: 0,
+        usuariosAtivos: 0,
+        totalUsuarios: 0,
+        taxaCancelamento: 0,
+        reservasCanceladas: 0
+      },
+      usagePorTipo: [],
+      horariosPico: [],
+      topUsuarios: [],
+      topSalas: [],
+      atividadeRecente: [],
+
+      async init() {
+        await this.loadReports();
+      },
+
+      async loadReports() {
+        try {
+          this.loading = true;
+          
+          // Simular dados para demonstração
+          this.metrics = {
+            totalReservas: 245,
+            crescimentoReservas: 12,
+            taxaOcupacao: 68,
+            horasUtilizadas: 1240,
+            usuariosAtivos: 42,
+            totalUsuarios: 58,
+            taxaCancelamento: 8,
+            reservasCanceladas: 20
+          };
+
+          this.usagePorTipo = [
+            { nome: 'Reunião', reservas: 120, percentage: 49 },
+            { nome: 'Treinamento', reservas: 75, percentage: 31 },
+            { nome: 'Auditório', reservas: 35, percentage: 14 },
+            { nome: 'Workshop', reservas: 15, percentage: 6 }
+          ];
+
+          this.horariosPico = [
+            { hora: '09:00 - 10:00', reservas: 45, percentage: 90 },
+            { hora: '14:00 - 15:00', reservas: 42, percentage: 84 },
+            { hora: '10:00 - 11:00', reservas: 38, percentage: 76 },
+            { hora: '15:00 - 16:00', reservas: 35, percentage: 70 },
+            { hora: '11:00 - 12:00', reservas: 30, percentage: 60 }
+          ];
+
+          this.topUsuarios = [
+            { id: 1, nome: 'Ana Silva', departamento: 'TI', reservas: 28, horas: 84 },
+            { id: 2, nome: 'Carlos Santos', departamento: 'Vendas', reservas: 24, horas: 72 },
+            { id: 3, nome: 'Maria Oliveira', departamento: 'RH', reservas: 22, horas: 66 },
+            { id: 4, nome: 'João Costa', departamento: 'Marketing', reservas: 18, horas: 54 },
+            { id: 5, nome: 'Pedro Lima', departamento: 'TI', reservas: 16, horas: 48 }
+          ];
+
+          this.topSalas = [
+            { id: 1, nome: 'Sala de Reunião A', localizacao: 'Edifício Principal', reservas: 85, ocupacao: 78 },
+            { id: 2, nome: 'Auditório Principal', localizacao: 'Edifício Principal', reservas: 45, ocupacao: 65 },
+            { id: 3, nome: 'Sala de Treinamento B', localizacao: 'Edifício Anexo', reservas: 38, ocupacao: 58 },
+            { id: 4, nome: 'Sala de Criatividade', localizacao: 'Edifício Principal', reservas: 32, ocupacao: 52 }
+          ];
+
+          this.atividadeRecente = [
+            { id: 1, tipo: 'criacao', descricao: 'Nova reserva criada para Sala A', usuario: 'Ana Silva', tempo: '2 min atrás' },
+            { id: 2, tipo: 'cancelamento', descricao: 'Reserva cancelada no Auditório', usuario: 'Carlos Santos', tempo: '15 min atrás' },
+            { id: 3, tipo: 'modificacao', descricao: 'Horário alterado na Sala B', usuario: 'Maria Oliveira', tempo: '1 hora atrás' },
+            { id: 4, tipo: 'criacao', descricao: 'Reserva recorrente criada', usuario: 'João Costa', tempo: '2 horas atrás' }
+          ];
+
+        } catch (error) {
+          console.error('Erro ao carregar relatórios:', error);
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      exportReport() {
+        // TODO: Implementar exportação para PDF
+        alert('Funcionalidade de exportação será implementada em breve!');
+      }
+    }
+  }
+</script>

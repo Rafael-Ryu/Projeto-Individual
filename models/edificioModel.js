@@ -3,10 +3,14 @@ const db = require('../config/db');
 const Edificio = {
     async create(data) {
         const { nome, endereco, descricao, andar, horario_abertura, horario_fechamento, esta_ativo } = data;
+
+        // Garantir que andar tenha um valor padrão se não fornecido
+        const andarValue = andar !== undefined && andar !== null ? andar : 1;
+
         try {
             const result = await db.query(
                 'INSERT INTO edificios (nome, endereco, descricao, andar, horario_abertura, horario_fechamento, esta_ativo) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-                [nome, endereco, descricao, andar, horario_abertura, horario_fechamento, esta_ativo]
+                [nome, endereco, descricao, andarValue, horario_abertura, horario_fechamento, esta_ativo]
             );
             return result.rows[0];
         } catch (error) {

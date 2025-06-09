@@ -9,7 +9,13 @@ exports.createReserva = async (req, res) => {
       return res.status(400).json({ message: 'O horário de término deve ser após o horário de início.' });
     }
 
-    const novaReserva = await Reserva.create(req.body);
+    // Adicionar o ID do usuário da sessão
+    const reservaData = {
+      ...req.body,
+      usuario_id: req.userId
+    };
+
+    const novaReserva = await Reserva.create(reservaData);
     res.status(201).json(novaReserva);
   } catch (error) {
     if (error.message && error.message.includes('Conflito de horário')) {

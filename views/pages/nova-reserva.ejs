@@ -1,0 +1,362 @@
+<!-- Nova Reserva Page -->
+<div class="min-h-screen bg-gray-50" x-data="novaReservaData()">
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <div class="flex items-center space-x-4">
+          <button 
+            onclick="history.back()"
+            class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Nova Reserva</h1>
+            <p class="text-gray-600">Preencha os dados para criar uma nova reserva</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="max-w-4xl">
+        <form @submit.prevent="submitReservation" class="space-y-8">
+          <!-- Basic Information -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Informações Básicas</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Título -->
+              <div class="md:col-span-2">
+                <label for="titulo" class="block text-sm font-medium text-gray-700 mb-2">
+                  Título da Reserva *
+                </label>
+                <input 
+                  type="text" 
+                  id="titulo" 
+                  x-model="form.titulo"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Ex: Reunião de Planejamento"
+                >
+              </div>
+
+              <!-- Sala -->
+              <div>
+                <label for="sala" class="block text-sm font-medium text-gray-700 mb-2">
+                  Sala *
+                </label>
+                <select 
+                  id="sala" 
+                  x-model="form.sala_id"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="">Selecione uma sala</option>
+                  <template x-for="sala in salas" :key="sala.id">
+                    <option :value="sala.id" x-text="sala.nome + ' - ' + sala.localizacao"></option>
+                  </template>
+                </select>
+              </div>
+
+              <!-- Número de Participantes -->
+              <div>
+                <label for="participantes" class="block text-sm font-medium text-gray-700 mb-2">
+                  Número de Participantes *
+                </label>
+                <input 
+                  type="number" 
+                  id="participantes" 
+                  x-model="form.numero_participantes"
+                  required
+                  min="1"
+                  max="100"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Ex: 8"
+                >
+              </div>
+            </div>
+
+            <!-- Descrição -->
+            <div class="mt-6">
+              <label for="descricao" class="block text-sm font-medium text-gray-700 mb-2">
+                Descrição
+              </label>
+              <textarea 
+                id="descricao" 
+                x-model="form.descricao"
+                rows="3"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                placeholder="Descreva o propósito da reunião..."
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Date and Time -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Data e Horário</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Data -->
+              <div>
+                <label for="data" class="block text-sm font-medium text-gray-700 mb-2">
+                  Data *
+                </label>
+                <input 
+                  type="date" 
+                  id="data" 
+                  x-model="form.data"
+                  required
+                  :min="new Date().toISOString().split('T')[0]"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+              </div>
+
+              <!-- Hora Início -->
+              <div>
+                <label for="hora_inicio" class="block text-sm font-medium text-gray-700 mb-2">
+                  Hora de Início *
+                </label>
+                <input 
+                  type="time" 
+                  id="hora_inicio" 
+                  x-model="form.hora_inicio"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+              </div>
+
+              <!-- Hora Fim -->
+              <div>
+                <label for="hora_fim" class="block text-sm font-medium text-gray-700 mb-2">
+                  Hora de Término *
+                </label>
+                <input 
+                  type="time" 
+                  id="hora_fim" 
+                  x-model="form.hora_fim"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Recurrence Options -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Opções de Recorrência</h2>
+            
+            <div class="space-y-4">
+              <!-- Recorrente Checkbox -->
+              <div class="flex items-center">
+                <input 
+                  id="recorrente" 
+                  type="checkbox" 
+                  x-model="form.e_recorrente"
+                  class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                >
+                <label for="recorrente" class="ml-2 block text-sm text-gray-700">
+                  Esta é uma reserva recorrente
+                </label>
+              </div>
+
+              <!-- Padrão de Recorrência -->
+              <div x-show="form.e_recorrente" x-transition>
+                <label for="padrao_recorrencia" class="block text-sm font-medium text-gray-700 mb-2">
+                  Padrão de Recorrência
+                </label>
+                <select 
+                  id="padrao_recorrencia" 
+                  x-model="form.padrao_recorrencia"
+                  class="w-full md:w-1/3 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="">Selecione o padrão</option>
+                  <option value="diario">Diário</option>
+                  <option value="semanal">Semanal</option>
+                  <option value="mensal">Mensal</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Room Info -->
+          <div x-show="selectedRoom" class="bg-blue-50 rounded-lg border border-blue-200 p-6">
+            <h3 class="text-lg font-semibold text-blue-900 mb-4">Informações da Sala Selecionada</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p class="text-sm font-medium text-blue-700">Capacidade</p>
+                <p class="text-lg text-blue-900" x-text="selectedRoom?.capacidade + ' pessoas'"></p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-blue-700">Localização</p>
+                <p class="text-lg text-blue-900" x-text="selectedRoom?.localizacao"></p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-blue-700">Equipamentos</p>
+                <p class="text-lg text-blue-900" x-text="selectedRoom?.equipamentos"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+            <button 
+              type="button"
+              onclick="history.back()"
+              class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button 
+              type="submit"
+              :disabled="loading"
+              class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <span x-show="!loading">Criar Reserva</span>
+              <span x-show="loading" class="flex items-center">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Criando...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function novaReservaData() {
+    return {
+      loading: false,
+      loadingSalas: true,
+      form: {
+        titulo: '',
+        sala_id: '',
+        numero_participantes: '',
+        descricao: '',
+        data: '',
+        hora_inicio: '',
+        hora_fim: '',
+        e_recorrente: false,
+        padrao_recorrencia: ''
+      },
+      salas: [],
+
+      async init() {
+        await this.loadSalas();
+        this.loadURLParams();
+      },
+
+      loadURLParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Pre-select room if provided
+        const salaId = urlParams.get('sala');
+        if (salaId) {
+          this.form.sala_id = salaId;
+        }
+
+        // Pre-fill date if provided
+        const data = urlParams.get('data');
+        if (data) {
+          this.form.data = data;
+        }
+      },
+
+      async loadSalas() {
+        try {
+          this.loadingSalas = true;
+          const response = await fetch('/api/salas');
+
+          if (response.ok) {
+            const data = await response.json();
+            this.salas = data.map(sala => ({
+              id: sala.id,
+              nome: sala.nome,
+              localizacao: `${sala.edificio_nome || 'Edifício'} - ${sala.floor}º Andar`,
+              capacidade: sala.capacidade,
+              equipamentos: sala.equipamentos || 'Não informado'
+            }));
+          } else {
+            console.error('Erro ao carregar salas:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Erro ao carregar salas:', error);
+        } finally {
+          this.loadingSalas = false;
+        }
+      },
+
+      get selectedRoom() {
+        return this.salas.find(sala => sala.id == this.form.sala_id);
+      },
+
+      async submitReservation() {
+        this.loading = true;
+
+        try {
+          // Validate form
+          if (!this.form.titulo || !this.form.sala_id || !this.form.data || !this.form.hora_inicio || !this.form.hora_fim) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+          }
+
+          // Validate time
+          if (this.form.hora_inicio >= this.form.hora_fim) {
+            alert('A hora de término deve ser posterior à hora de início.');
+            return;
+          }
+
+          // Prepare data for API
+          const reservaData = {
+            titulo: this.form.titulo,
+            sala_id: this.form.sala_id,
+            tempo_inicio: `${this.form.data}T${this.form.hora_inicio}:00`,
+            tempo_fim: `${this.form.data}T${this.form.hora_fim}:00`,
+            descricao: this.form.descricao,
+            numero_participantes: parseInt(this.form.numero_participantes) || 1,
+            e_recorrente: this.form.e_recorrente,
+            padrao_recorrencia: this.form.e_recorrente ? this.form.padrao_recorrencia : null
+          };
+
+          const response = await fetch('/api/reservas', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reservaData)
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert('Reserva criada com sucesso!');
+            window.location.href = '/minhas-reservas';
+          } else {
+            alert(result.message || 'Erro ao criar reserva. Tente novamente.');
+          }
+
+        } catch (err) {
+          console.error('Erro ao criar reserva:', err);
+          alert('Erro de conexão. Tente novamente.');
+        } finally {
+          this.loading = false;
+        }
+      }
+    }
+  }
+</script>

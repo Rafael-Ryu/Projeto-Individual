@@ -1,0 +1,292 @@
+<!-- Favoritos Page -->
+<div class="min-h-screen bg-gray-50" x-data="favoritosData()">
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Salas Favoritas</h1>
+        <p class="text-gray-600">Suas salas mais utilizadas e marcadas como favoritas</p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Quick Reserve -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Reserva Rápida</h3>
+          </div>
+          <p class="text-gray-600 mb-4">Reserve sua sala favorita para agora</p>
+          <button 
+            @click="quickReserve()"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            Reservar Agora
+          </button>
+        </div>
+
+        <!-- Most Used -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="p-2 bg-green-100 rounded-lg">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Mais Utilizada</h3>
+          </div>
+          <p class="text-gray-600 mb-2" x-text="mostUsedRoom?.nome || 'Nenhuma sala'"></p>
+          <p class="text-sm text-gray-500" x-text="mostUsedRoom ? mostUsedRoom.totalReservas + ' reservas' : 'Faça sua primeira reserva'"></p>
+        </div>
+
+        <!-- Recent Favorite -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="p-2 bg-red-100 rounded-lg">
+              <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Favorito Recente</h3>
+          </div>
+          <p class="text-gray-600 mb-2" x-text="recentFavorite?.nome || 'Nenhuma sala'"></p>
+          <p class="text-sm text-gray-500" x-text="recentFavorite ? 'Adicionado recentemente' : 'Marque uma sala como favorita'"></p>
+        </div>
+      </div>
+
+      <!-- Favorites List -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900">Minhas Salas Favoritas</h2>
+            <button 
+              @click="window.location.href = '/buscar-salas'"
+              class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+            >
+              Buscar Mais Salas →
+            </button>
+          </div>
+        </div>
+
+        <div class="divide-y divide-gray-200">
+          <template x-for="sala in favoriteRooms" :key="sala.id">
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+              <div class="flex items-center justify-between">
+                <!-- Room Info -->
+                <div class="flex items-center space-x-4">
+                  <!-- Room Icon -->
+                  <div class="p-3 bg-blue-100 rounded-lg">
+                    <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m5 0V9a2 2 0 012-2h2a2 2 0 012 2v12"></path>
+                    </svg>
+                  </div>
+
+                  <!-- Details -->
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-900" x-text="sala.nome"></h3>
+                    <p class="text-gray-600" x-text="sala.localizacao"></p>
+                    <div class="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+                      <div class="flex items-center space-x-1">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM9 3a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <span x-text="sala.capacidade + ' pessoas'"></span>
+                      </div>
+                      <div class="flex items-center space-x-1">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span x-text="sala.totalReservas + ' reservas'"></span>
+                      </div>
+                      <div class="flex items-center space-x-1">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span x-text="'Última reserva: ' + sala.ultimaReserva"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-3">
+                  <!-- Quick Reserve -->
+                  <button 
+                    @click="reservarSala(sala)"
+                    class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  >
+                    Reservar
+                  </button>
+
+                  <!-- More Actions -->
+                  <div class="relative" x-data="{ open: false }">
+                    <button 
+                      @click="open = !open"
+                      class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                    >
+                      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                      </svg>
+                    </button>
+
+                    <div 
+                      x-show="open" 
+                      @click.away="open = false"
+                      x-transition:enter="transition ease-out duration-100"
+                      x-transition:enter-start="transform opacity-0 scale-95"
+                      x-transition:enter-end="transform opacity-100 scale-100"
+                      x-transition:leave="transition ease-in duration-75"
+                      x-transition:leave-start="transform opacity-100 scale-100"
+                      x-transition:leave-end="transform opacity-0 scale-95"
+                      class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-10"
+                    >
+                      <div class="py-1">
+                        <button 
+                          @click="verDetalhes(sala)"
+                          class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                          </svg>
+                          Ver Detalhes
+                        </button>
+                        <button 
+                          @click="verHistorico(sala)"
+                          class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                          Ver Histórico
+                        </button>
+                        <button 
+                          @click="removerFavorito(sala)"
+                          class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          <svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                          Remover dos Favoritos
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Empty State -->
+          <div x-show="favoriteRooms.length === 0" class="p-12 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhuma sala favorita</h3>
+            <p class="mt-1 text-sm text-gray-500">Comece marcando salas como favoritas para acesso rápido.</p>
+            <div class="mt-6">
+              <button 
+                @click="window.location.href = '/buscar-salas'"
+                class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg"
+              >
+                Buscar Salas
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function favoritosData() {
+    return {
+      favoriteRooms: [],
+      mostUsedRoom: null,
+      recentFavorite: null,
+
+      async init() {
+        await this.loadFavorites();
+      },
+
+      async loadFavorites() {
+        try {
+          // TODO: Implementar API de favoritos
+          // Por enquanto, dados simulados
+          this.favoriteRooms = [
+            {
+              id: 1,
+              nome: 'Sala de Reunião A',
+              localizacao: 'Edifício Principal - 2º Andar',
+              capacidade: 12,
+              totalReservas: 15,
+              ultimaReserva: '2 dias atrás'
+            },
+            {
+              id: 2,
+              nome: 'Auditório Principal',
+              localizacao: 'Edifício Principal - Térreo',
+              capacidade: 50,
+              totalReservas: 8,
+              ultimaReserva: '1 semana atrás'
+            }
+          ];
+
+          this.mostUsedRoom = this.favoriteRooms[0];
+          this.recentFavorite = this.favoriteRooms[this.favoriteRooms.length - 1];
+
+        } catch (error) {
+          console.error('Erro ao carregar favoritos:', error);
+        }
+      },
+
+      quickReserve() {
+        if (this.mostUsedRoom) {
+          this.reservarSala(this.mostUsedRoom);
+        } else {
+          window.location.href = '/nova-reserva';
+        }
+      },
+
+      reservarSala(sala) {
+        window.location.href = `/nova-reserva?sala=${sala.id}`;
+      },
+
+      verDetalhes(sala) {
+        alert(`Detalhes da ${sala.nome}\nCapacidade: ${sala.capacidade} pessoas\nLocalização: ${sala.localizacao}`);
+      },
+
+      verHistorico(sala) {
+        window.location.href = `/historico?sala=${sala.id}`;
+      },
+
+      async removerFavorito(sala) {
+        if (confirm(`Remover "${sala.nome}" dos favoritos?`)) {
+          // TODO: Implementar API de remoção de favoritos
+          this.favoriteRooms = this.favoriteRooms.filter(s => s.id !== sala.id);
+          
+          // Atualizar estatísticas
+          if (this.mostUsedRoom?.id === sala.id) {
+            this.mostUsedRoom = this.favoriteRooms[0] || null;
+          }
+          if (this.recentFavorite?.id === sala.id) {
+            this.recentFavorite = this.favoriteRooms[this.favoriteRooms.length - 1] || null;
+          }
+        }
+      }
+    }
+  }
+</script>

@@ -1,0 +1,348 @@
+<!-- Minhas Reservas Page -->
+<div class="min-h-screen bg-gray-50" x-data="reservasData()">
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Minhas Reservas</h1>
+            <p class="text-gray-600">Gerencie todas as suas reservas de salas</p>
+          </div>
+          <button 
+            @click="showNewReservationModal = true"
+            class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            <span>Nova Reserva</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters and Search -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+          <!-- Search -->
+          <div class="flex-1 max-w-md">
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+              <input 
+                type="text" 
+                placeholder="Buscar reservas..." 
+                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                x-model="searchQuery"
+              >
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="flex items-center space-x-4">
+            <!-- Status Filter -->
+            <select 
+              x-model="selectedStatus"
+              class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todos os Status</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="pendente">Pendente</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+
+            <!-- Date Filter -->
+            <select 
+              x-model="selectedPeriod"
+              class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="all">Todos os Períodos</option>
+              <option value="today">Hoje</option>
+              <option value="week">Esta Semana</option>
+              <option value="month">Este Mês</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reservations List -->
+      <div class="space-y-4">
+        <template x-for="reserva in filteredReservas" :key="reserva.id">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between">
+              <!-- Reservation Info -->
+              <div class="flex items-center space-x-4">
+                <!-- Room Icon -->
+                <div class="p-3 bg-blue-100 rounded-lg">
+                  <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m5 0V9a2 2 0 012-2h2a2 2 0 012 2v12"></path>
+                  </svg>
+                </div>
+
+                <!-- Details -->
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900" x-text="reserva.titulo"></h3>
+                  <p class="text-gray-600" x-text="reserva.sala"></p>
+                  <div class="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+                    <div class="flex items-center space-x-1">
+                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                      </svg>
+                      <span x-text="reserva.data"></span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span x-text="reserva.horario"></span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM9 3a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                      </svg>
+                      <span x-text="reserva.participantes + ' participantes'"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Status and Actions -->
+              <div class="flex items-center space-x-4">
+                <!-- Status Badge -->
+                <span 
+                  class="px-3 py-1 text-xs font-medium rounded-full"
+                  :class="{
+                    'bg-green-100 text-green-800': reserva.status === 'confirmado',
+                    'bg-yellow-100 text-yellow-800': reserva.status === 'pendente',
+                    'bg-red-100 text-red-800': reserva.status === 'cancelado'
+                  }"
+                  x-text="formatStatus(reserva.status)"
+                ></span>
+
+                <!-- Actions Dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                  <button 
+                    @click="open = !open"
+                    class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                  >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                    </svg>
+                  </button>
+
+                  <div 
+                    x-show="open" 
+                    @click.away="open = false"
+                    x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="transform opacity-0 scale-95"
+                    x-transition:enter-end="transform opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-75"
+                    x-transition:leave-start="transform opacity-100 scale-100"
+                    x-transition:leave-end="transform opacity-0 scale-95"
+                    class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-10"
+                  >
+                    <div class="py-1">
+                      <button 
+                        @click="viewReservation(reserva)"
+                        class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        Ver Detalhes
+                      </button>
+                      <button 
+                        x-show="reserva.status !== 'cancelada'"
+                        @click="editReservation(reserva)"
+                        class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        Editar
+                      </button>
+                      <button 
+                        x-show="reserva.status !== 'cancelada'"
+                        @click="cancelReservation(reserva)"
+                        class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        <svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description (if exists) -->
+            <div x-show="reserva.descricao" class="mt-4 pt-4 border-t border-gray-200">
+              <p class="text-sm text-gray-600" x-text="reserva.descricao"></p>
+            </div>
+          </div>
+        </template>
+
+        <!-- Empty State -->
+        <div x-show="filteredReservas.length === 0" class="text-center py-12">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhuma reserva encontrada</h3>
+          <p class="mt-1 text-sm text-gray-500">Comece criando uma nova reserva.</p>
+          <div class="mt-6">
+            <button 
+              @click="showNewReservationModal = true"
+              class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg"
+            >
+              Nova Reserva
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function reservasData() {
+    return {
+      searchQuery: '',
+      selectedStatus: '',
+      selectedPeriod: 'all',
+      showNewReservationModal: false,
+      loading: true,
+      reservas: [],
+
+      async init() {
+        await this.loadReservas();
+      },
+
+      async loadReservas() {
+        try {
+          this.loading = true;
+          const response = await fetch('/api/reservas');
+
+          if (response.ok) {
+            const data = await response.json();
+            this.reservas = data.map(reserva => ({
+              id: reserva.id,
+              titulo: reserva.titulo,
+              sala: reserva.sala_nome || 'Sala não identificada',
+              data: new Date(reserva.tempo_inicio).toLocaleDateString('pt-BR'),
+              horario: this.formatTime(reserva.tempo_inicio, reserva.tempo_fim),
+              participantes: reserva.numero_participantes || 1,
+              status: this.mapStatus(reserva.status),
+              descricao: reserva.descricao || ''
+            }));
+          } else {
+            console.error('Erro ao carregar reservas:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Erro ao carregar reservas:', error);
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      formatTime(inicio, fim) {
+        const dataInicio = new Date(inicio);
+        const dataFim = new Date(fim);
+        const horaInicio = dataInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const horaFim = dataFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        return `${horaInicio} - ${horaFim}`;
+      },
+
+      mapStatus(status) {
+        const statusMap = {
+          'confirmado': 'confirmado',
+          'pendente': 'pendente',
+          'cancelado': 'cancelado'
+        };
+        return statusMap[status] || status;
+      },
+
+      formatStatus(status) {
+        if (!status || status === 'null' || status === null) {
+          return 'Confirmado';
+        }
+        return status.charAt(0).toUpperCase() + status.slice(1);
+      },
+
+      get filteredReservas() {
+        let filtered = this.reservas;
+
+        // Filter by search query
+        if (this.searchQuery) {
+          filtered = filtered.filter(reserva => 
+            reserva.titulo.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+            reserva.sala.toLowerCase().includes(this.searchQuery.toLowerCase())
+          );
+        }
+
+        // Filter by status
+        if (this.selectedStatus) {
+          filtered = filtered.filter(reserva => reserva.status === this.selectedStatus);
+        }
+
+        // Filter by period (simplified for demo)
+        if (this.selectedPeriod !== 'all') {
+          // In a real app, you would filter by actual dates
+          filtered = filtered.filter(reserva => {
+            // This is just for demo purposes
+            return true;
+          });
+        }
+
+        return filtered;
+      },
+
+      viewReservation(reserva) {
+        // Implementation for viewing reservation details
+        console.log('Viewing reservation:', reserva);
+      },
+
+      editReservation(reserva) {
+        // Implementation for editing reservation
+        console.log('Editing reservation:', reserva);
+      },
+
+      async cancelReservation(reserva) {
+        if (confirm('Tem certeza que deseja cancelar esta reserva?')) {
+          try {
+            const response = await fetch(`/api/reservas/${reserva.id}/cancelar`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+
+            if (response.ok) {
+              reserva.status = 'cancelada';
+              alert('Reserva cancelada com sucesso!');
+            } else {
+              const error = await response.json();
+              alert(error.message || 'Erro ao cancelar reserva');
+            }
+          } catch (error) {
+            console.error('Erro ao cancelar reserva:', error);
+            alert('Erro de conexão. Tente novamente.');
+          }
+        }
+      }
+    }
+  }
+</script>

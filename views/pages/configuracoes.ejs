@@ -1,0 +1,296 @@
+<!-- Configurações Page -->
+<div class="min-h-screen bg-gray-50" x-data="configuracoesData()">
+
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Configurações</h1>
+        <p class="text-gray-600">Personalize sua experiência no sistema</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Settings Content -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Notification Settings -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-900">Notificações</h2>
+              <p class="text-sm text-gray-600">Configure como você deseja receber notificações</p>
+            </div>
+            <div class="p-6 space-y-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-medium text-gray-900">Notificações por Email</h3>
+                  <p class="text-sm text-gray-500">Receber confirmações e lembretes por email</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" x-model="settings.emailNotifications" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-medium text-gray-900">Lembretes de Reunião</h3>
+                  <p class="text-sm text-gray-500">Receber lembretes 15 minutos antes das reuniões</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" x-model="settings.meetingReminders" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-medium text-gray-900">Notificações de Cancelamento</h3>
+                  <p class="text-sm text-gray-500">Ser notificado quando suas reservas forem canceladas</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" x-model="settings.cancellationNotifications" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Display Settings -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-900">Exibição</h2>
+              <p class="text-sm text-gray-600">Personalize a aparência do sistema</p>
+            </div>
+            <div class="p-6 space-y-6">
+
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Idioma</label>
+                <select
+                  x-model="settings.language"
+                  @change="updateSetting('language', $event.target.value)"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="pt-BR">Português (Brasil)</option>
+                  <option value="en-US">English (US)</option>
+                  <option value="es-ES">Español</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Fuso Horário</label>
+                <select 
+                  x-model="settings.timezone"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="America/Sao_Paulo">São Paulo (GMT-3)</option>
+                  <option value="America/New_York">New York (GMT-5)</option>
+                  <option value="Europe/London">London (GMT+0)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendar Settings -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-900">Calendário</h2>
+              <p class="text-sm text-gray-600">Configure as preferências do calendário</p>
+            </div>
+            <div class="p-6 space-y-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Visualização Padrão</label>
+                <select 
+                  x-model="settings.defaultCalendarView"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="month">Mês</option>
+                  <option value="week">Semana</option>
+                  <option value="day">Dia</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Primeiro Dia da Semana</label>
+                <select 
+                  x-model="settings.weekStartDay"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="0">Domingo</option>
+                  <option value="1">Segunda-feira</option>
+                </select>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-medium text-gray-900">Mostrar Fins de Semana</h3>
+                  <p class="text-sm text-gray-500">Exibir sábado e domingo no calendário</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" x-model="settings.showWeekends" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- Save Button -->
+          <div class="flex justify-end">
+            <button 
+              @click="saveSettings()"
+              :disabled="loading"
+              class="bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              <span x-show="!loading">Salvar Configurações</span>
+              <span x-show="loading">Salvando...</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Settings Sidebar -->
+        <div class="space-y-6">
+          <!-- Quick Settings -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Configurações Rápidas</h3>
+            <div class="space-y-3">
+              <button 
+                @click="resetToDefaults()"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Restaurar Padrões
+              </button>
+              <button 
+                @click="exportSettings()"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Exportar Configurações
+              </button>
+              <button 
+                @click="window.location.href = '/perfil'"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Editar Perfil
+              </button>
+            </div>
+          </div>
+
+          <!-- Help -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Precisa de Ajuda?</h3>
+            <p class="text-sm text-gray-600 mb-4">
+              Consulte nossa central de ajuda para mais informações sobre as configurações.
+            </p>
+            <button 
+              @click="window.location.href = '/ajuda'"
+              class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm transition-colors"
+            >
+              Ver Central de Ajuda
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function configuracoesData() {
+    return {
+      loading: false,
+      settings: {
+        // Notificações
+        emailNotifications: true,
+        meetingReminders: true,
+        cancellationNotifications: true,
+
+        // Exibição
+        language: 'pt-BR',
+        timezone: 'America/Sao_Paulo',
+
+        // Calendário
+        defaultCalendarView: 'month',
+        weekStartDay: '1',
+        showWeekends: true
+      },
+
+      async init() {
+        await this.loadSettings();
+      },
+
+      async loadSettings() {
+        try {
+          const response = await fetch('/api/users/settings');
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              this.settings = { ...this.settings, ...result.data };
+            }
+          }
+        } catch (error) {
+          console.error('Erro ao carregar configurações:', error);
+        }
+      },
+
+      async saveSettings() {
+        this.loading = true;
+        try {
+          const response = await fetch('/api/users/settings', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.settings)
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            alert('Configurações salvas com sucesso!');
+          } else {
+            alert(result.message || 'Erro ao salvar configurações');
+          }
+        } catch (error) {
+          console.error('Erro ao salvar configurações:', error);
+          alert('Erro de conexão');
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      resetToDefaults() {
+        if (confirm('Tem certeza que deseja restaurar as configurações padrão?')) {
+          this.settings = {
+            emailNotifications: true,
+            meetingReminders: true,
+            cancellationNotifications: true,
+            language: 'pt-BR',
+            timezone: 'America/Sao_Paulo',
+            defaultCalendarView: 'month',
+            weekStartDay: '1',
+            showWeekends: true
+          };
+          alert('Configurações restauradas para os padrões!');
+        }
+      },
+
+      exportSettings() {
+        const dataStr = JSON.stringify(this.settings, null, 2);
+        const dataBlob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'configuracoes-sistema-reservas.json';
+        link.click();
+      }
+    }
+  }
+</script>

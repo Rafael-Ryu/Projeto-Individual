@@ -11,6 +11,19 @@ class User {
     return result.rows[0];
   }
 
+  static async getByEmail(email) {
+    const result = await db.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    return result.rows[0];
+  }
+
+  static async updateLastLogin(id) {
+    const result = await db.query(
+      'UPDATE usuarios SET ultimo_login = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *',
+      [id]
+    );
+    return result.rows[0];
+  }
+
   static async create(data) {
     const { nome, email, password_hash, telefone, imagem_perfil, departamento, esta_ativo } = data;
     const query = `
@@ -50,7 +63,41 @@ class User {
 
   static async delete(id) {
     const result = await db.query('DELETE FROM usuarios WHERE id = $1 RETURNING *', [id]);
-    return result.rows[0]; 
+    return result.rows[0];
+  }
+
+  // Métodos para reset de senha
+  static async saveResetCode(userId, code) {
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos
+    const result = await db.query(
+      'UPDATE usuarios SET reset_code = $1, reset_code_expires = $2 WHERE id = $3 RETURNING *',
+      [code, expiresAt, userId]
+    );
+    return result.rows[0];
+  }
+
+  static async verifyResetCode(userId, code) {
+    const result = await db.query(
+      'SELECT * FROM usuarios WHERE id = $1 AND reset_code = $2 AND reset_code_expires > CURRENT_TIMESTAMP',
+      [userId, code]
+    );
+    return result.rows.length > 0;
+  }
+
+  static async updatePassword(userId, passwordHash) {
+    const result = await db.query(
+      'UPDATE usuarios SET password_hash = $1, atualizado_em = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
+      [passwordHash, userId]
+    );
+    return result.rows[0];
+  }
+
+  static async clearResetCode(userId) {
+    const result = await db.query(
+      'UPDATE usuarios SET reset_code = NULL, reset_code_expires = NULL WHERE id = $1 RETURNING *',
+      [userId]
+    );
+    return result.rows[0];
   }
 }
 

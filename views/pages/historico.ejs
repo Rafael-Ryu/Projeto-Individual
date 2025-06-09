@@ -1,0 +1,391 @@
+<!-- Histórico Page -->
+<div class="min-h-screen bg-gray-50" x-data="historicoData()">
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Histórico de Reservas</h1>
+        <p class="text-gray-600">Visualize todas as suas reservas passadas e estatísticas</p>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Total de Reservas</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.total"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-green-100 rounded-lg">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Concluídas</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.concluidas"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-red-100 rounded-lg">
+              <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Canceladas</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.canceladas"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-purple-100 rounded-lg">
+              <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Horas Totais</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.horasTotais + 'h'"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Period Filter -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Período</label>
+            <select 
+              x-model="filters.periodo"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="all">Todos os períodos</option>
+              <option value="last-month">Último mês</option>
+              <option value="last-3-months">Últimos 3 meses</option>
+              <option value="last-6-months">Últimos 6 meses</option>
+              <option value="last-year">Último ano</option>
+            </select>
+          </div>
+
+          <!-- Status Filter -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select 
+              x-model="filters.status"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todos os status</option>
+              <option value="confirmado">Confirmadas</option>
+              <option value="cancelado">Canceladas</option>
+            </select>
+          </div>
+
+          <!-- Room Filter -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Sala</label>
+            <select 
+              x-model="filters.sala"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todas as salas</option>
+              <template x-for="sala in uniqueRooms" :key="sala.id">
+                <option :value="sala.id" x-text="sala.nome"></option>
+              </template>
+            </select>
+          </div>
+
+          <!-- Search -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+            <input 
+              type="text" 
+              x-model="filters.search"
+              placeholder="Título da reserva..."
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- History Timeline -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-900">Linha do Tempo</h2>
+        </div>
+
+        <div class="p-6">
+          <div class="flow-root">
+            <ul class="-mb-8">
+              <template x-for="(reserva, index) in filteredReservas" :key="reserva.id">
+                <li>
+                  <div class="relative pb-8">
+                    <!-- Timeline line -->
+                    <span 
+                      x-show="index !== filteredReservas.length - 1"
+                      class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                    ></span>
+                    
+                    <div class="relative flex space-x-3">
+                      <!-- Status Icon -->
+                      <div>
+                        <span 
+                          class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white"
+                          :class="{
+                            'bg-green-500': reserva.status === 'confirmado',
+                            'bg-red-500': reserva.status === 'cancelado',
+                            'bg-yellow-500': reserva.status === 'pendente'
+                          }"
+                        >
+                          <svg 
+                            x-show="reserva.status === 'confirmado'"
+                            class="h-5 w-5 text-white" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                          </svg>
+                          <svg 
+                            x-show="reserva.status === 'cancelado'"
+                            class="h-5 w-5 text-white" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                          <svg 
+                            x-show="reserva.status === 'pendente'"
+                            class="h-5 w-5 text-white" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                        </span>
+                      </div>
+
+                      <!-- Content -->
+                      <div class="min-w-0 flex-1 pt-1.5">
+                        <div class="flex items-center justify-between">
+                          <div>
+                            <h3 class="text-sm font-medium text-gray-900" x-text="reserva.titulo"></h3>
+                            <p class="text-sm text-gray-500" x-text="reserva.sala_nome"></p>
+                          </div>
+                          <div class="text-right text-sm text-gray-500">
+                            <p x-text="formatDate(reserva.tempo_inicio)"></p>
+                            <p x-text="formatTime(reserva.tempo_inicio, reserva.tempo_fim)"></p>
+                          </div>
+                        </div>
+
+                        <div class="mt-2 text-sm text-gray-700">
+                          <p x-text="reserva.descricao"></p>
+                        </div>
+
+                        <div class="mt-2 flex items-center space-x-4 text-xs text-gray-500">
+                          <span x-text="reserva.numero_participantes + ' participantes'"></span>
+                          <span x-text="'Duração: ' + calculateDuration(reserva.tempo_inicio, reserva.tempo_fim)"></span>
+                          <span 
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                            :class="{
+                              'bg-green-100 text-green-800': reserva.status === 'confirmado',
+                              'bg-red-100 text-red-800': reserva.status === 'cancelado',
+                              'bg-yellow-100 text-yellow-800': reserva.status === 'pendente'
+                            }"
+                            x-text="formatStatus(reserva.status)"
+                          ></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </template>
+            </ul>
+          </div>
+
+          <!-- Empty State -->
+          <div x-show="filteredReservas.length === 0" class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhuma reserva encontrada</h3>
+            <p class="mt-1 text-sm text-gray-500">Tente ajustar os filtros ou faça sua primeira reserva.</p>
+            <div class="mt-6">
+              <button 
+                @click="window.location.href = '/nova-reserva'"
+                class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg"
+              >
+                Nova Reserva
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function historicoData() {
+    return {
+      loading: true,
+      reservas: [],
+      filters: {
+        periodo: 'all',
+        status: '',
+        sala: '',
+        search: ''
+      },
+
+      async init() {
+        await this.loadHistorico();
+      },
+
+      async loadHistorico() {
+        try {
+          this.loading = true;
+          const response = await fetch('/api/reservas');
+          
+          if (response.ok) {
+            this.reservas = await response.json();
+          }
+        } catch (error) {
+          console.error('Erro ao carregar histórico:', error);
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      get stats() {
+        const total = this.reservas.length;
+        const concluidas = this.reservas.filter(r => r.status === 'confirmado').length;
+        const canceladas = this.reservas.filter(r => r.status === 'cancelado').length;
+        
+        const horasTotais = this.reservas.reduce((total, reserva) => {
+          const inicio = new Date(reserva.tempo_inicio);
+          const fim = new Date(reserva.tempo_fim);
+          const horas = (fim - inicio) / (1000 * 60 * 60);
+          return total + horas;
+        }, 0);
+
+        return {
+          total,
+          concluidas,
+          canceladas,
+          horasTotais: Math.round(horasTotais)
+        };
+      },
+
+      get uniqueRooms() {
+        const rooms = new Map();
+        this.reservas.forEach(reserva => {
+          if (reserva.sala_id && reserva.sala_nome) {
+            rooms.set(reserva.sala_id, {
+              id: reserva.sala_id,
+              nome: reserva.sala_nome
+            });
+          }
+        });
+        return Array.from(rooms.values());
+      },
+
+      get filteredReservas() {
+        return this.reservas.filter(reserva => {
+          // Search filter
+          if (this.filters.search && !reserva.titulo.toLowerCase().includes(this.filters.search.toLowerCase())) {
+            return false;
+          }
+
+          // Status filter
+          if (this.filters.status && reserva.status !== this.filters.status) {
+            return false;
+          }
+
+          // Room filter
+          if (this.filters.sala && reserva.sala_id !== this.filters.sala) {
+            return false;
+          }
+
+          // Period filter
+          if (this.filters.periodo !== 'all') {
+            const reservaDate = new Date(reserva.tempo_inicio);
+            const now = new Date();
+            let cutoffDate = new Date();
+
+            switch (this.filters.periodo) {
+              case 'last-month':
+                cutoffDate.setMonth(now.getMonth() - 1);
+                break;
+              case 'last-3-months':
+                cutoffDate.setMonth(now.getMonth() - 3);
+                break;
+              case 'last-6-months':
+                cutoffDate.setMonth(now.getMonth() - 6);
+                break;
+              case 'last-year':
+                cutoffDate.setFullYear(now.getFullYear() - 1);
+                break;
+            }
+
+            if (reservaDate < cutoffDate) {
+              return false;
+            }
+          }
+
+          return true;
+        }).sort((a, b) => new Date(b.tempo_inicio) - new Date(a.tempo_inicio));
+      },
+
+      formatDate(dateString) {
+        return new Date(dateString).toLocaleDateString('pt-BR');
+      },
+
+      formatTime(inicio, fim) {
+        const startTime = new Date(inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const endTime = new Date(fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        return `${startTime} - ${endTime}`;
+      },
+
+      calculateDuration(inicio, fim) {
+        const start = new Date(inicio);
+        const end = new Date(fim);
+        const hours = (end - start) / (1000 * 60 * 60);
+        return `${hours.toFixed(1)}h`;
+      },
+
+      formatStatus(status) {
+        if (!status || status === 'null' || status === null) {
+          return 'Confirmado';
+        }
+        return status.charAt(0).toUpperCase() + status.slice(1);
+      }
+    }
+  }
+</script>

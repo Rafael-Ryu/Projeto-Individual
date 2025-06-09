@@ -1,0 +1,587 @@
+<!-- Admin Equipamentos Page -->
+<div class="min-h-screen bg-gray-50" x-data="adminEquipamentosData()">
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Gerenciar Equipamentos</h1>
+            <p class="text-gray-600">Administre todos os equipamentos das salas</p>
+          </div>
+          <button
+            @click="showCreateModal = true"
+            class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            <span>Novo Equipamento</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Total de Equipamentos</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.total"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-green-100 rounded-lg">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Funcionando</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.funcionando"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-yellow-100 rounded-lg">
+              <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Em Manutenção</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.manutencao"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="p-2 bg-red-100 rounded-lg">
+              <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Fora de Uso</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.foraUso"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <input
+              type="text"
+              x-model="filters.search"
+              placeholder="Buscar equipamentos..."
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+          </div>
+          <div>
+            <select
+              x-model="filters.categoria"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todas as categorias</option>
+              <option value="audiovisual">Audiovisual</option>
+              <option value="informatica">Informática</option>
+              <option value="mobiliario">Mobiliário</option>
+              <option value="climatizacao">Climatização</option>
+              <option value="seguranca">Segurança</option>
+            </select>
+          </div>
+          <div>
+            <select
+              x-model="filters.status"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todos os status</option>
+              <option value="funcionando">Funcionando</option>
+              <option value="manutencao">Em Manutenção</option>
+              <option value="fora_uso">Fora de Uso</option>
+            </select>
+          </div>
+          <div>
+            <select
+              x-model="filters.sala"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">Todas as salas</option>
+              <template x-for="sala in salas" :key="sala.id">
+                <option :value="sala.id" x-text="sala.nome"></option>
+              </template>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Equipment Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <template x-for="equipamento in filteredEquipamentos" :key="equipamento.id">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <!-- Equipment Image/Icon -->
+            <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="p-4 bg-white rounded-full shadow-lg">
+                  <svg class="h-12 w-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      x-show="equipamento.categoria === 'audiovisual'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    ></path>
+                    <path
+                      x-show="equipamento.categoria === 'informatica'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    ></path>
+                    <path
+                      x-show="!['audiovisual', 'informatica'].includes(equipamento.categoria)"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Status Badge -->
+              <div class="absolute top-4 right-4">
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  :class="{
+                    'bg-green-100 text-green-800': equipamento.status === 'funcionando',
+                    'bg-yellow-100 text-yellow-800': equipamento.status === 'manutencao',
+                    'bg-red-100 text-red-800': equipamento.status === 'fora_uso'
+                  }"
+                  x-text="getStatusText(equipamento.status)"
+                ></span>
+              </div>
+            </div>
+
+            <!-- Equipment Details -->
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-semibold text-gray-900" x-text="equipamento.nome"></h3>
+                <span class="text-sm text-gray-500" x-text="'#' + equipamento.codigo"></span>
+              </div>
+
+              <p class="text-sm text-gray-600 mb-3" x-text="equipamento.descricao"></p>
+
+              <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-500">Categoria:</span>
+                  <span class="font-medium" x-text="getCategoriaText(equipamento.categoria)"></span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-500">Sala:</span>
+                  <span class="font-medium" x-text="equipamento.sala_nome || 'Não atribuído'"></span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-500">Última Manutenção:</span>
+                  <span class="font-medium" x-text="formatDate(equipamento.ultima_manutencao)"></span>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="flex space-x-2">
+                <button
+                  @click="editEquipamento(equipamento)"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Editar
+                </button>
+                <button
+                  @click="changeStatus(equipamento)"
+                  class="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Status
+                </button>
+                <button
+                  @click="deleteEquipamento(equipamento)"
+                  class="px-3 py-2 border border-red-300 text-red-700 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <!-- Empty State -->
+        <div x-show="filteredEquipamentos.length === 0" class="col-span-full text-center py-12">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhum equipamento encontrado</h3>
+          <p class="mt-1 text-sm text-gray-500">Comece criando um novo equipamento.</p>
+        </div>
+      </div>
+
+      <!-- Create/Edit Modal -->
+      <div
+        x-show="showCreateModal || showEditModal"
+        x-transition:enter="ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+      >
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <h3 class="text-lg font-medium text-gray-900 mb-4" x-text="showCreateModal ? 'Novo Equipamento' : 'Editar Equipamento'"></h3>
+
+            <form @submit.prevent="showCreateModal ? createEquipamento() : updateEquipamento()" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Equipamento</label>
+                <input
+                  type="text"
+                  x-model="equipamentoForm.nome"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Código</label>
+                <input
+                  type="text"
+                  x-model="equipamentoForm.codigo"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                <select
+                  x-model="equipamentoForm.categoria"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="">Selecione uma categoria</option>
+                  <option value="audiovisual">Audiovisual</option>
+                  <option value="informatica">Informática</option>
+                  <option value="mobiliario">Mobiliário</option>
+                  <option value="climatizacao">Climatização</option>
+                  <option value="seguranca">Segurança</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Sala</label>
+                <select
+                  x-model="equipamentoForm.sala_id"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="">Não atribuído</option>
+                  <template x-for="sala in salas" :key="sala.id">
+                    <option :value="sala.id" x-text="sala.nome"></option>
+                  </template>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select
+                  x-model="equipamentoForm.status"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="funcionando">Funcionando</option>
+                  <option value="manutencao">Em Manutenção</option>
+                  <option value="fora_uso">Fora de Uso</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                <textarea
+                  x-model="equipamentoForm.descricao"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                ></textarea>
+              </div>
+
+              <div class="flex justify-end space-x-3 pt-4">
+                <button
+                  type="button"
+                  @click="closeModal()"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  :disabled="loading"
+                  class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 rounded-lg transition-colors"
+                >
+                  <span x-show="!loading" x-text="showCreateModal ? 'Criar Equipamento' : 'Salvar Alterações'"></span>
+                  <span x-show="loading">Salvando...</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function adminEquipamentosData() {
+    return {
+      loading: false,
+      showCreateModal: false,
+      showEditModal: false,
+      equipamentos: [],
+      salas: [],
+      filters: {
+        search: '',
+        categoria: '',
+        status: '',
+        sala: ''
+      },
+      equipamentoForm: {
+        nome: '',
+        codigo: '',
+        categoria: '',
+        sala_id: '',
+        status: 'funcionando',
+        descricao: ''
+      },
+      editingEquipamento: null,
+      stats: {
+        total: 0,
+        funcionando: 0,
+        manutencao: 0,
+        foraUso: 0
+      },
+
+      async init() {
+        await this.loadData();
+      },
+
+      async loadData() {
+        try {
+          // Carregar equipamentos (simulados)
+          this.equipamentos = [
+            {
+              id: 1,
+              nome: 'Projetor Epson',
+              codigo: 'PROJ001',
+              categoria: 'audiovisual',
+              sala_id: 1,
+              sala_nome: 'Sala de Reunião A',
+              status: 'funcionando',
+              descricao: 'Projetor Full HD para apresentações',
+              ultima_manutencao: '2024-01-15'
+            },
+            {
+              id: 2,
+              nome: 'Notebook Dell',
+              codigo: 'NOTE001',
+              categoria: 'informatica',
+              sala_id: 2,
+              sala_nome: 'Auditório Principal',
+              status: 'funcionando',
+              descricao: 'Notebook para apresentações',
+              ultima_manutencao: '2024-02-01'
+            },
+            {
+              id: 3,
+              nome: 'Sistema de Som',
+              codigo: 'SOM001',
+              categoria: 'audiovisual',
+              sala_id: 2,
+              sala_nome: 'Auditório Principal',
+              status: 'manutencao',
+              descricao: 'Sistema de som ambiente',
+              ultima_manutencao: '2024-01-20'
+            }
+          ];
+
+          // Carregar salas
+          const salasResponse = await fetch('/api/salas');
+          if (salasResponse.ok) {
+            this.salas = await salasResponse.json();
+          }
+
+          this.calculateStats();
+        } catch (error) {
+          console.error('Erro ao carregar dados:', error);
+        }
+      },
+
+      calculateStats() {
+        this.stats.total = this.equipamentos.length;
+        this.stats.funcionando = this.equipamentos.filter(e => e.status === 'funcionando').length;
+        this.stats.manutencao = this.equipamentos.filter(e => e.status === 'manutencao').length;
+        this.stats.foraUso = this.equipamentos.filter(e => e.status === 'fora_uso').length;
+      },
+
+      get filteredEquipamentos() {
+        return this.equipamentos.filter(equipamento => {
+          if (this.filters.search) {
+            const search = this.filters.search.toLowerCase();
+            if (!equipamento.nome.toLowerCase().includes(search) &&
+                !equipamento.codigo.toLowerCase().includes(search)) {
+              return false;
+            }
+          }
+          if (this.filters.categoria && equipamento.categoria !== this.filters.categoria) {
+            return false;
+          }
+          if (this.filters.status && equipamento.status !== this.filters.status) {
+            return false;
+          }
+          if (this.filters.sala && equipamento.sala_id != this.filters.sala) {
+            return false;
+          }
+          return true;
+        });
+      },
+
+      async createEquipamento() {
+        this.loading = true;
+        try {
+          // Simular criação
+          const newEquipamento = {
+            id: Date.now(),
+            ...this.equipamentoForm,
+            sala_nome: this.salas.find(s => s.id == this.equipamentoForm.sala_id)?.nome || null,
+            ultima_manutencao: new Date().toISOString().split('T')[0]
+          };
+
+          this.equipamentos.push(newEquipamento);
+          this.calculateStats();
+
+          alert('Equipamento criado com sucesso!');
+          this.closeModal();
+        } catch (error) {
+          console.error('Erro ao criar equipamento:', error);
+          alert('Erro de conexão');
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      editEquipamento(equipamento) {
+        this.editingEquipamento = equipamento;
+        this.equipamentoForm = { ...equipamento };
+        this.showEditModal = true;
+      },
+
+      async updateEquipamento() {
+        this.loading = true;
+        try {
+          const index = this.equipamentos.findIndex(e => e.id === this.editingEquipamento.id);
+          if (index !== -1) {
+            this.equipamentos[index] = {
+              ...this.equipamentoForm,
+              sala_nome: this.salas.find(s => s.id == this.equipamentoForm.sala_id)?.nome || null
+            };
+            this.calculateStats();
+          }
+
+          alert('Equipamento atualizado com sucesso!');
+          this.closeModal();
+        } catch (error) {
+          console.error('Erro ao atualizar equipamento:', error);
+          alert('Erro de conexão');
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      changeStatus(equipamento) {
+        const statuses = ['funcionando', 'manutencao', 'fora_uso'];
+        const currentIndex = statuses.indexOf(equipamento.status);
+        const nextIndex = (currentIndex + 1) % statuses.length;
+
+        equipamento.status = statuses[nextIndex];
+        this.calculateStats();
+
+        alert(`Status alterado para: ${this.getStatusText(equipamento.status)}`);
+      },
+
+      deleteEquipamento(equipamento) {
+        if (confirm(`Tem certeza que deseja excluir o equipamento "${equipamento.nome}"?`)) {
+          const index = this.equipamentos.findIndex(e => e.id === equipamento.id);
+          if (index !== -1) {
+            this.equipamentos.splice(index, 1);
+            this.calculateStats();
+            alert('Equipamento excluído com sucesso!');
+          }
+        }
+      },
+
+      closeModal() {
+        this.showCreateModal = false;
+        this.showEditModal = false;
+        this.editingEquipamento = null;
+        this.equipamentoForm = {
+          nome: '',
+          codigo: '',
+          categoria: '',
+          sala_id: '',
+          status: 'funcionando',
+          descricao: ''
+        };
+      },
+
+      getStatusText(status) {
+        const statusMap = {
+          'funcionando': 'Funcionando',
+          'manutencao': 'Em Manutenção',
+          'fora_uso': 'Fora de Uso'
+        };
+        return statusMap[status] || status;
+      },
+
+      getCategoriaText(categoria) {
+        const categoriaMap = {
+          'audiovisual': 'Audiovisual',
+          'informatica': 'Informática',
+          'mobiliario': 'Mobiliário',
+          'climatizacao': 'Climatização',
+          'seguranca': 'Segurança'
+        };
+        return categoriaMap[categoria] || categoria;
+      },
+
+      formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        return new Date(dateString).toLocaleDateString('pt-BR');
+      }
+    }
+  }
+</script>

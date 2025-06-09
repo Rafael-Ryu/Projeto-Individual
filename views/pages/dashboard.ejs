@@ -1,0 +1,297 @@
+<!-- Dashboard Page -->
+<div class="min-h-screen bg-gray-50" x-data="dashboardData()"
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Dashboard Content -->
+    <main class="flex-1 p-6">
+      <!-- Welcome Section -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Bem-vindo de volta!</h1>
+        <p class="text-gray-600">Aqui está um resumo das suas reservas e atividades recentes.</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Reservas -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Total de Reservas</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.totalReservas">12</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reservas Ativas -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-green-100 rounded-lg">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Reservas Ativas</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.reservasAtivas">8</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Próximas Reservas -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-yellow-100 rounded-lg">
+              <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Próximas 24h</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.proximasReservas">3</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salas Favoritas -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-red-100 rounded-lg">
+              <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Salas Favoritas</p>
+              <p class="text-2xl font-bold text-gray-900" x-text="stats.salasFavoritas">5</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="mb-8">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button
+            @click="window.location.href = '/nova-reserva'"
+            class="bg-primary-600 hover:bg-primary-700 text-white p-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            <span>Nova Reserva</span>
+          </button>
+          
+          <button
+            @click="window.location.href = '/buscar-salas'"
+            class="bg-white hover:bg-gray-50 text-gray-700 p-4 rounded-lg border border-gray-300 flex items-center justify-center space-x-2 transition-colors"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span>Buscar Salas</span>
+          </button>
+          
+          <button
+            @click="window.location.href = '/calendario'"
+            class="bg-white hover:bg-gray-50 text-gray-700 p-4 rounded-lg border border-gray-300 flex items-center justify-center space-x-2 transition-colors"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <span>Ver Calendário</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Recent Reservations -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Próximas Reservas -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900">Próximas Reservas</h3>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <template x-for="reserva in proximasReservas" :key="reserva.id">
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-blue-100 rounded-lg">
+                      <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m5 0V9a2 2 0 012-2h2a2 2 0 012 2v12"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900" x-text="reserva.sala"></p>
+                      <p class="text-sm text-gray-600" x-text="reserva.horario"></p>
+                    </div>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full" x-text="reserva.status"></span>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salas Populares -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900">Salas Mais Utilizadas</h3>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <template x-for="sala in salasPopulares" :key="sala.id">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <span class="text-sm font-medium text-gray-600" x-text="sala.inicial"></span>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900" x-text="sala.nome"></p>
+                      <p class="text-sm text-gray-600" x-text="sala.localizacao"></p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm font-medium text-gray-900" x-text="sala.reservas + ' reservas'"></p>
+                    <p class="text-xs text-gray-600">Este mês</p>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function dashboardData() {
+    return {
+      loading: true,
+      stats: {
+        totalReservas: 0,
+        reservasAtivas: 0,
+        proximasReservas: 0,
+        salasFavoritas: 0
+      },
+      proximasReservas: [
+        {
+          id: 1,
+          sala: 'Sala de Reunião A',
+          horario: 'Hoje, 14:00 - 15:30',
+          status: 'Confirmado'
+        },
+        {
+          id: 2,
+          sala: 'Auditório Principal',
+          horario: 'Amanhã, 09:00 - 11:00',
+          status: 'Confirmado'
+        },
+        {
+          id: 3,
+          sala: 'Sala de Treinamento B',
+          horario: 'Amanhã, 15:00 - 17:00',
+          status: 'Pendente'
+        }
+      ],
+      salasPopulares: [],
+
+      async init() {
+        await this.loadDashboardData();
+      },
+
+      async loadDashboardData() {
+        try {
+          this.loading = true;
+
+          // Carregar todos os dados do dashboard de uma vez
+          const response = await fetch('/api/dashboard/data');
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              const data = result.data;
+
+              // Atualizar estatísticas
+              this.stats = data.stats;
+
+              // Atualizar próximas reservas
+              this.proximasReservas = data.proximasReservas.map(r => ({
+                id: r.id,
+                sala: r.sala_nome || 'Sala não identificada',
+                horario: this.formatDateTime(r.tempo_inicio, r.tempo_fim),
+                status: r.status === 'confirmado' ? 'Confirmado' : r.status
+              }));
+
+              // Atualizar salas populares
+              this.salasPopulares = data.salasPopulares.map(sala => ({
+                id: sala.id,
+                nome: sala.nome,
+                localizacao: `${sala.edificio_nome || 'Edifício'} - ${sala.floor}º Andar`,
+                reservas: sala.totalReservas || 0,
+                inicial: sala.nome ? sala.nome.charAt(0).toUpperCase() : 'S'
+              }));
+            }
+          }
+
+        } catch (error) {
+          console.error('Erro ao carregar dados do dashboard:', error);
+        } finally {
+          this.loading = false;
+        }
+      },
+
+
+
+      formatDateTime(inicio, fim) {
+        const dataInicio = new Date(inicio);
+        const dataFim = new Date(fim);
+        const hoje = new Date();
+        const amanha = new Date(hoje);
+        amanha.setDate(hoje.getDate() + 1);
+
+        let dataTexto = '';
+        if (dataInicio.toDateString() === hoje.toDateString()) {
+          dataTexto = 'Hoje';
+        } else if (dataInicio.toDateString() === amanha.toDateString()) {
+          dataTexto = 'Amanhã';
+        } else {
+          dataTexto = dataInicio.toLocaleDateString('pt-BR');
+        }
+
+        const horaInicio = dataInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const horaFim = dataFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        return `${dataTexto}, ${horaInicio} - ${horaFim}`;
+      }
+    }
+  }
+
+  // Inicializar dados quando a página carregar
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('dashboardData', dashboardData);
+  });
+
+  // Auto-inicializar quando Alpine estiver pronto
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      if (window.Alpine && window.Alpine.store) {
+        const dashboard = document.querySelector('[x-data="dashboardData()"]');
+        if (dashboard && dashboard._x_dataStack && dashboard._x_dataStack[0]) {
+          dashboard._x_dataStack[0].init();
+        }
+      }
+    }, 100);
+  });
+</script>

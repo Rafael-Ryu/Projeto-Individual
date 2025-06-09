@@ -1,0 +1,319 @@
+<!-- Perfil Page -->
+<div class="min-h-screen bg-gray-50" x-data="perfilData()">
+  <!-- Header -->
+  <%- include('../components/dashboard-header') %>
+  
+  <!-- Main Content -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <%- include('../components/sidebar') %>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Meu Perfil</h1>
+        <p class="text-gray-600">Gerencie suas informações pessoais e preferências</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Profile Info -->
+        <div class="lg:col-span-2">
+          <!-- Personal Information -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+            <div class="p-6 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-900">Informações Pessoais</h2>
+            </div>
+            <div class="p-6">
+              <form @submit.prevent="updateProfile()" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                    <input 
+                      type="text" 
+                      x-model="profile.nome"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                      type="email" 
+                      x-model="profile.email"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                    <input 
+                      type="tel" 
+                      x-model="profile.telefone"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Departamento</label>
+                    <select 
+                      x-model="profile.departamento"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    >
+                      <option value="">Selecione um departamento</option>
+                      <option value="TI">TI</option>
+                      <option value="RH">RH</option>
+                      <option value="Vendas">Vendas</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Financeiro">Financeiro</option>
+                      <option value="Administração">Administração</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="flex justify-end">
+                  <button 
+                    type="submit"
+                    :disabled="loading"
+                    class="bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg transition-colors"
+                  >
+                    <span x-show="!loading">Salvar Alterações</span>
+                    <span x-show="loading">Salvando...</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Change Password -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-900">Alterar Senha</h2>
+            </div>
+            <div class="p-6">
+              <form @submit.prevent="changePassword()" class="space-y-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Senha Atual</label>
+                  <input 
+                    type="password" 
+                    x-model="passwordForm.currentPassword"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  >
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Nova Senha</label>
+                  <input 
+                    type="password" 
+                    x-model="passwordForm.newPassword"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  >
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Nova Senha</label>
+                  <input 
+                    type="password" 
+                    x-model="passwordForm.confirmPassword"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  >
+                </div>
+                
+                <div class="flex justify-end">
+                  <button 
+                    type="submit"
+                    :disabled="passwordLoading"
+                    class="bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg transition-colors"
+                  >
+                    <span x-show="!passwordLoading">Alterar Senha</span>
+                    <span x-show="passwordLoading">Alterando...</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Sidebar -->
+        <div class="space-y-6">
+          <!-- Profile Picture -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Foto do Perfil</h3>
+            <div class="text-center">
+              <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <span class="text-2xl font-bold text-gray-700" x-text="getInitials()"></span>
+              </div>
+              <button class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                Alterar Foto
+              </button>
+            </div>
+          </div>
+
+          <!-- Account Stats -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Estatísticas da Conta</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Membro desde</span>
+                <span class="font-medium" x-text="formatDate(profile.criado_em)"></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Total de Reservas</span>
+                <span class="font-medium" x-text="stats.totalReservas"></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Último Login</span>
+                <span class="font-medium" x-text="formatDate(profile.ultimo_login)"></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Status</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Ativo
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
+            <div class="space-y-3">
+              <button 
+                @click="window.location.href = '/minhas-reservas'"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Ver Minhas Reservas
+              </button>
+              <button 
+                @click="window.location.href = '/favoritos'"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Salas Favoritas
+              </button>
+              <button 
+                @click="window.location.href = '/historico'"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Histórico
+              </button>
+              <button 
+                @click="window.location.href = '/configuracoes'"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Configurações
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function perfilData() {
+    return {
+      loading: false,
+      passwordLoading: false,
+      profile: {
+        nome: '<%= locals.currentUser ? locals.currentUser.nome : "" %>',
+        email: '<%= locals.currentUser ? locals.currentUser.email : "" %>',
+        telefone: '<%= locals.currentUser ? locals.currentUser.telefone || "" : "" %>',
+        departamento: '<%= locals.currentUser ? locals.currentUser.departamento || "" : "" %>',
+        criado_em: '<%= locals.currentUser ? locals.currentUser.criado_em : "" %>',
+        ultimo_login: '<%= locals.currentUser ? locals.currentUser.ultimo_login : "" %>'
+      },
+      passwordForm: {
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      },
+      stats: {
+        totalReservas: 0
+      },
+
+      async init() {
+        await this.loadStats();
+      },
+
+      async loadStats() {
+        try {
+          const response = await fetch('/api/dashboard/stats');
+          if (response.ok) {
+            const result = await response.json();
+            this.stats = result.data;
+          }
+        } catch (error) {
+          console.error('Erro ao carregar estatísticas:', error);
+        }
+      },
+
+      async updateProfile() {
+        this.loading = true;
+        try {
+          const response = await fetch('/api/users/profile', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.profile)
+          });
+
+          const result = await response.json();
+          
+          if (result.success) {
+            alert('Perfil atualizado com sucesso!');
+          } else {
+            alert(result.message || 'Erro ao atualizar perfil');
+          }
+        } catch (error) {
+          console.error('Erro ao atualizar perfil:', error);
+          alert('Erro de conexão');
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      async changePassword() {
+        if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
+          alert('As senhas não coincidem');
+          return;
+        }
+
+        this.passwordLoading = true;
+        try {
+          const response = await fetch('/api/users/change-password', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.passwordForm)
+          });
+
+          const result = await response.json();
+          
+          if (result.success) {
+            alert('Senha alterada com sucesso!');
+            this.passwordForm = {
+              currentPassword: '',
+              newPassword: '',
+              confirmPassword: ''
+            };
+          } else {
+            alert(result.message || 'Erro ao alterar senha');
+          }
+        } catch (error) {
+          console.error('Erro ao alterar senha:', error);
+          alert('Erro de conexão');
+        } finally {
+          this.passwordLoading = false;
+        }
+      },
+
+      getInitials() {
+        if (!this.profile.nome) return 'U';
+        return this.profile.nome.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2);
+      },
+
+      formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        return new Date(dateString).toLocaleDateString('pt-BR');
+      }
+    }
+  }
+</script>

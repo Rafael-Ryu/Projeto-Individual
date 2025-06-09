@@ -3,7 +3,17 @@ const db = require('../config/db');
 
 class Reserva {
   static async getAll() {
-    const result = await db.query('SELECT * FROM reservas');
+    const result = await db.query(`
+      SELECT r.*,
+             COALESCE(r.status, 'confirmado') as status,
+             s.nome as sala_nome,
+             s.capacidade,
+             e.nome as edificio_nome
+      FROM reservas r
+      LEFT JOIN salas s ON r.sala_id = s.id
+      LEFT JOIN edificios e ON s.construcao_id = e.id
+      ORDER BY r.tempo_inicio DESC
+    `);
     return result.rows;
   }
 
@@ -13,12 +23,24 @@ class Reserva {
   }
 
   static async getByUsuarioId(usuarioId) {
-    const result = await db.query('SELECT * FROM reservas WHERE usuario_id = $1 ORDER BY tempo_inicio DESC', [usuarioId]);
+    const result = await db.query(`
+      SELECT r.*,
+             COALESCE(r.status, 'confirmado') as status,
+             s.nome as sala_nome,
+             s.capacidade,
+             e.nome as edificio_nome
+      FROM reservas r
+      LEFT JOIN salas s ON r.sala_id = s.id
+      LEFT JOIN edificios e ON s.construcao_id = e.id
+      WHERE r.usuario_id = $1
+      ORDER BY r.tempo_inicio DESC
+    `, [usuarioId]);
     return result.rows;
   }
 
   static async create(data) {
-    const { sala_id, usuario_id, tempo_inicio, tempo_fim, titulo, descricao, status, numero_participantes, e_recorrente, padrao_recorrencia } = data;
+    const { sala_id, usuario_id, tempo_inicio, tempo_fim, titulo, descricao, numero_participantes, e_recorrente, padrao_recorrencia } = data;
+    const status = data.status || 'confirmado'; // Garantir status padrão
     const result = await db.query(
       'INSERT INTO reservas (sala_id, usuario_id, tempo_inicio, tempo_fim, titulo, descricao, status, numero_participantes, e_recorrente, padrao_recorrencia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
       [sala_id, usuario_id, tempo_inicio, tempo_fim, titulo, descricao, status, numero_participantes, e_recorrente, padrao_recorrencia]
