@@ -1,5 +1,3 @@
-// tests/userController.test.js
-
 const userController = require('../controllers/userController');
 const userService = require('../services/userService');
 

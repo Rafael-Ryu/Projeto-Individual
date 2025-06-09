@@ -1,16 +1,10 @@
-<!-- Admin Salas Page -->
 <div class="min-h-screen bg-gray-50" x-data="adminSalasData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <div class="flex items-center justify-between">
           <div>
@@ -29,7 +23,6 @@
         </div>
       </div>
 
-      <!-- Filters -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
@@ -76,7 +69,6 @@
         </div>
       </div>
 
-      <!-- Salas Table -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200">
@@ -136,7 +128,6 @@
           </table>
         </div>
 
-        <!-- Empty State -->
         <div x-show="filteredSalas.length === 0" class="text-center py-12">
           <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m5 0V9a2 2 0 012-2h2a2 2 0 012 2v12"></path>
@@ -146,7 +137,6 @@
         </div>
       </div>
 
-      <!-- Create/Edit Modal -->
       <div 
         x-show="showCreateModal || showEditModal" 
         x-transition:enter="ease-out duration-300"

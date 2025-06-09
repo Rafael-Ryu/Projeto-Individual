@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= pageTitle %></title>
+  <title>
+    <%= pageTitle %>
+  </title>
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Alpine.js -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-
-
-  <!-- Custom CSS -->
-  <style>
-    <%- include('../css/style.css'); %>
-  </style>
-
-  <!-- Tailwind Config -->
+  <link rel="stylesheet" href="/css/style.css">
   <script>
     tailwind.config = {
       theme: {
@@ -39,8 +32,9 @@
     }
   </script>
 </head>
+
 <body class="bg-gray-50 min-h-screen">
-  <!-- Renderiza o conteúdo da página específica -->
   <%- include(content) %>
 </body>
+
 </html>

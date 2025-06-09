@@ -1,16 +1,10 @@
-<!-- Minhas Reservas Page -->
-<div class="min-h-screen bg-gray-50" x-data="reservasData()">
-  <!-- Header -->
+<div class="min-h-screen bg-gray-50" x-data="minhasReservasData()">
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <div class="flex items-center justify-between">
           <div>
@@ -29,10 +23,8 @@
         </div>
       </div>
 
-      <!-- Filters and Search -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-          <!-- Search -->
           <div class="flex-1 max-w-md">
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -49,9 +41,7 @@
             </div>
           </div>
 
-          <!-- Filters -->
           <div class="flex items-center space-x-4">
-            <!-- Status Filter -->
             <select 
               x-model="selectedStatus"
               class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
@@ -62,7 +52,6 @@
               <option value="cancelada">Cancelada</option>
             </select>
 
-            <!-- Date Filter -->
             <select 
               x-model="selectedPeriod"
               class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
@@ -76,21 +65,17 @@
         </div>
       </div>
 
-      <!-- Reservations List -->
       <div class="space-y-4">
         <template x-for="reserva in filteredReservas" :key="reserva.id">
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
-              <!-- Reservation Info -->
               <div class="flex items-center space-x-4">
-                <!-- Room Icon -->
                 <div class="p-3 bg-blue-100 rounded-lg">
                   <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m5 0V9a2 2 0 012-2h2a2 2 0 012 2v12"></path>
                   </svg>
                 </div>
 
-                <!-- Details -->
                 <div>
                   <h3 class="text-lg font-semibold text-gray-900" x-text="reserva.titulo"></h3>
                   <p class="text-gray-600" x-text="reserva.sala"></p>
@@ -117,9 +102,7 @@
                 </div>
               </div>
 
-              <!-- Status and Actions -->
               <div class="flex items-center space-x-4">
-                <!-- Status Badge -->
                 <span 
                   class="px-3 py-1 text-xs font-medium rounded-full"
                   :class="{
@@ -128,9 +111,8 @@
                     'bg-red-100 text-red-800': reserva.status === 'cancelado'
                   }"
                   x-text="formatStatus(reserva.status)"
-                ></span>
+                >                </span>
 
-                <!-- Actions Dropdown -->
                 <div class="relative" x-data="{ open: false }">
                   <button 
                     @click="open = !open"
@@ -189,14 +171,12 @@
               </div>
             </div>
 
-            <!-- Description (if exists) -->
             <div x-show="reserva.descricao" class="mt-4 pt-4 border-t border-gray-200">
               <p class="text-sm text-gray-600" x-text="reserva.descricao"></p>
             </div>
           </div>
         </template>
 
-        <!-- Empty State -->
         <div x-show="filteredReservas.length === 0" class="text-center py-12">
           <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -285,7 +265,6 @@
       get filteredReservas() {
         let filtered = this.reservas;
 
-        // Filter by search query
         if (this.searchQuery) {
           filtered = filtered.filter(reserva => 
             reserva.titulo.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
@@ -293,16 +272,12 @@
           );
         }
 
-        // Filter by status
         if (this.selectedStatus) {
           filtered = filtered.filter(reserva => reserva.status === this.selectedStatus);
         }
 
-        // Filter by period (simplified for demo)
         if (this.selectedPeriod !== 'all') {
-          // In a real app, you would filter by actual dates
           filtered = filtered.filter(reserva => {
-            // This is just for demo purposes
             return true;
           });
         }
@@ -311,12 +286,10 @@
       },
 
       viewReservation(reserva) {
-        // Implementation for viewing reservation details
         console.log('Viewing reservation:', reserva);
       },
 
       editReservation(reserva) {
-        // Implementation for editing reservation
         console.log('Editing reservation:', reserva);
       },
 

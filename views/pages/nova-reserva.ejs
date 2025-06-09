@@ -1,16 +1,10 @@
-<!-- Nova Reserva Page -->
 <div class="min-h-screen bg-gray-50" x-data="novaReservaData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <div class="flex items-center space-x-4">
           <button 
@@ -28,15 +22,12 @@
         </div>
       </div>
 
-      <!-- Form -->
       <div class="max-w-4xl">
         <form @submit.prevent="submitReservation" class="space-y-8">
-          <!-- Basic Information -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-6">Informações Básicas</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Título -->
               <div class="md:col-span-2">
                 <label for="titulo" class="block text-sm font-medium text-gray-700 mb-2">
                   Título da Reserva *
@@ -51,7 +42,6 @@
                 >
               </div>
 
-              <!-- Sala -->
               <div>
                 <label for="sala" class="block text-sm font-medium text-gray-700 mb-2">
                   Sala *
@@ -69,7 +59,6 @@
                 </select>
               </div>
 
-              <!-- Número de Participantes -->
               <div>
                 <label for="participantes" class="block text-sm font-medium text-gray-700 mb-2">
                   Número de Participantes *
@@ -87,7 +76,6 @@
               </div>
             </div>
 
-            <!-- Descrição -->
             <div class="mt-6">
               <label for="descricao" class="block text-sm font-medium text-gray-700 mb-2">
                 Descrição
@@ -102,12 +90,10 @@
             </div>
           </div>
 
-          <!-- Date and Time -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-6">Data e Horário</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <!-- Data -->
               <div>
                 <label for="data" class="block text-sm font-medium text-gray-700 mb-2">
                   Data *
@@ -122,7 +108,6 @@
                 >
               </div>
 
-              <!-- Hora Início -->
               <div>
                 <label for="hora_inicio" class="block text-sm font-medium text-gray-700 mb-2">
                   Hora de Início *
@@ -136,7 +121,6 @@
                 >
               </div>
 
-              <!-- Hora Fim -->
               <div>
                 <label for="hora_fim" class="block text-sm font-medium text-gray-700 mb-2">
                   Hora de Término *
@@ -152,12 +136,10 @@
             </div>
           </div>
 
-          <!-- Recurrence Options -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-6">Opções de Recorrência</h2>
             
             <div class="space-y-4">
-              <!-- Recorrente Checkbox -->
               <div class="flex items-center">
                 <input 
                   id="recorrente" 
@@ -170,7 +152,6 @@
                 </label>
               </div>
 
-              <!-- Padrão de Recorrência -->
               <div x-show="form.e_recorrente" x-transition>
                 <label for="padrao_recorrencia" class="block text-sm font-medium text-gray-700 mb-2">
                   Padrão de Recorrência
@@ -189,7 +170,6 @@
             </div>
           </div>
 
-          <!-- Selected Room Info -->
           <div x-show="selectedRoom" class="bg-blue-50 rounded-lg border border-blue-200 p-6">
             <h3 class="text-lg font-semibold text-blue-900 mb-4">Informações da Sala Selecionada</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -208,7 +188,6 @@
             </div>
           </div>
 
-          <!-- Form Actions -->
           <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
             <button 
               type="button"
@@ -264,13 +243,11 @@
       loadURLParams() {
         const urlParams = new URLSearchParams(window.location.search);
 
-        // Pre-select room if provided
         const salaId = urlParams.get('sala');
         if (salaId) {
           this.form.sala_id = salaId;
         }
 
-        // Pre-fill date if provided
         const data = urlParams.get('data');
         if (data) {
           this.form.data = data;
@@ -309,19 +286,16 @@
         this.loading = true;
 
         try {
-          // Validate form
           if (!this.form.titulo || !this.form.sala_id || !this.form.data || !this.form.hora_inicio || !this.form.hora_fim) {
             alert('Por favor, preencha todos os campos obrigatórios.');
             return;
           }
 
-          // Validate time
           if (this.form.hora_inicio >= this.form.hora_fim) {
             alert('A hora de término deve ser posterior à hora de início.');
             return;
           }
 
-          // Prepare data for API
           const reservaData = {
             titulo: this.form.titulo,
             sala_id: this.form.sala_id,

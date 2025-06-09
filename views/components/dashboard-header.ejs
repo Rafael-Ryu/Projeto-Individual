@@ -1,8 +1,6 @@
-<!-- Dashboard Header -->
 <header class="bg-white shadow-sm border-b border-gray-200" x-data="headerData()">
   <div class="px-6 py-4">
     <div class="flex items-center justify-between">
-      <!-- Logo and Title -->
       <div class="flex items-center space-x-4">
         <div class="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center">
           <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,7 +10,6 @@
         <h1 class="text-xl font-semibold text-gray-900">Sistema de Reservas</h1>
       </div>
 
-      <!-- Search Bar -->
       <div class="flex-1 max-w-lg mx-8">
         <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -29,9 +26,7 @@
         </div>
       </div>
 
-      <!-- Right Side Actions -->
       <div class="flex items-center space-x-4">
-        <!-- Notifications -->
         <div class="relative" x-data="{ open: false }">
           <button 
             @click="open = !open"
@@ -40,11 +35,9 @@
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-3.5-3.5a50.002 50.002 0 00-2.5-2.5M15 17v2a3 3 0 11-6 0v-2m6 0H9m6 0a3 3 0 01-3 3 3 3 0 01-3-3m3-3V9a3 3 0 116 0v6.5z"></path>
             </svg>
-            <!-- Notification Badge -->
             <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
           </button>
 
-          <!-- Notifications Dropdown -->
           <div 
             x-show="open" 
             @click.away="open = false"
@@ -85,7 +78,6 @@
           </div>
         </div>
 
-        <!-- User Menu -->
         <div class="relative" x-data="{ open: false }">
           <button 
             @click="open = !open"
@@ -121,7 +113,6 @@
             </svg>
           </button>
 
-          <!-- User Dropdown -->
           <div 
             x-show="open" 
             @click.away="open = false"

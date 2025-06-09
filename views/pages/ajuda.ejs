@@ -1,22 +1,15 @@
-<!-- Ajuda Page -->
 <div class="min-h-screen bg-gray-50" x-data="ajudaData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Central de Ajuda</h1>
         <p class="text-gray-600">Encontre respostas para suas dúvidas sobre o sistema de reservas</p>
       </div>
 
-      <!-- Search -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
         <div class="max-w-md mx-auto">
           <div class="relative">
@@ -35,7 +28,6 @@
         </div>
       </div>
 
-      <!-- Quick Actions -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
           <div class="p-3 bg-blue-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
@@ -86,9 +78,7 @@
         </div>
       </div>
 
-      <!-- Content Sections -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <!-- Guia do Usuário -->
         <div x-show="activeSection === 'guia'" x-transition>
           <div class="p-6 border-b border-gray-200">
             <h2 class="text-xl font-semibold text-gray-900">Guia do Usuário</h2>
@@ -132,7 +122,6 @@
           </div>
         </div>
 
-        <!-- FAQ -->
         <div x-show="activeSection === 'faq'" x-transition>
           <div class="p-6 border-b border-gray-200">
             <h2 class="text-xl font-semibold text-gray-900">Perguntas Frequentes</h2>
@@ -163,14 +152,12 @@
           </div>
         </div>
 
-        <!-- Contato -->
         <div x-show="activeSection === 'contato'" x-transition>
           <div class="p-6 border-b border-gray-200">
             <h2 class="text-xl font-semibold text-gray-900">Entre em Contato</h2>
           </div>
           <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <!-- Contact Info -->
               <div>
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Informações de Contato</h3>
                 <div class="space-y-4">
@@ -195,7 +182,6 @@
                 </div>
               </div>
 
-              <!-- Contact Form -->
               <div>
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Envie uma Mensagem</h3>
                 <form @submit.prevent="enviarMensagem()" class="space-y-4">
@@ -233,7 +219,6 @@
           </div>
         </div>
 
-        <!-- Default Content -->
         <div x-show="activeSection === 'default'" x-transition>
           <div class="p-6">
             <div class="text-center py-12">
@@ -317,10 +302,8 @@
           return;
         }
 
-        // TODO: Implementar envio de mensagem
         alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
         
-        // Reset form
         this.contato = {
           assunto: '',
           mensagem: ''

@@ -1,24 +1,16 @@
-<!-- Dashboard Page -->
-<div class="min-h-screen bg-gray-50" x-data="dashboardData()"
-  <!-- Header -->
+<div class="min-h-screen bg-gray-50" x-data="dashboardData()">
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Dashboard Content -->
     <main class="flex-1 p-6">
-      <!-- Welcome Section -->
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Bem-vindo de volta!</h1>
         <p class="text-gray-600">Aqui está um resumo das suas reservas e atividades recentes.</p>
       </div>
 
-      <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Total Reservas -->
         <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
           <div class="flex items-center">
             <div class="p-2 bg-blue-100 rounded-lg">
@@ -33,7 +25,6 @@
           </div>
         </div>
 
-        <!-- Reservas Ativas -->
         <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
           <div class="flex items-center">
             <div class="p-2 bg-green-100 rounded-lg">
@@ -48,7 +39,6 @@
           </div>
         </div>
 
-        <!-- Próximas Reservas -->
         <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
           <div class="flex items-center">
             <div class="p-2 bg-yellow-100 rounded-lg">
@@ -63,7 +53,6 @@
           </div>
         </div>
 
-        <!-- Salas Favoritas -->
         <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
           <div class="flex items-center">
             <div class="p-2 bg-red-100 rounded-lg">
@@ -79,7 +68,6 @@
         </div>
       </div>
 
-      <!-- Quick Actions -->
       <div class="mb-8">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -115,9 +103,7 @@
         </div>
       </div>
 
-      <!-- Recent Reservations -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Próximas Reservas -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="p-6 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-900">Próximas Reservas</h3>
@@ -144,7 +130,6 @@
           </div>
         </div>
 
-        <!-- Salas Populares -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="p-6 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-900">Salas Mais Utilizadas</h3>
@@ -216,17 +201,14 @@
         try {
           this.loading = true;
 
-          // Carregar todos os dados do dashboard de uma vez
           const response = await fetch('/api/dashboard/data');
           if (response.ok) {
             const result = await response.json();
             if (result.success) {
               const data = result.data;
 
-              // Atualizar estatísticas
               this.stats = data.stats;
 
-              // Atualizar próximas reservas
               this.proximasReservas = data.proximasReservas.map(r => ({
                 id: r.id,
                 sala: r.sala_nome || 'Sala não identificada',
@@ -234,7 +216,6 @@
                 status: r.status === 'confirmado' ? 'Confirmado' : r.status
               }));
 
-              // Atualizar salas populares
               this.salasPopulares = data.salasPopulares.map(sala => ({
                 id: sala.id,
                 nome: sala.nome,
@@ -278,12 +259,10 @@
     }
   }
 
-  // Inicializar dados quando a página carregar
   document.addEventListener('alpine:init', () => {
     Alpine.data('dashboardData', dashboardData);
   });
 
-  // Auto-inicializar quando Alpine estiver pronto
   document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       if (window.Alpine && window.Alpine.store) {

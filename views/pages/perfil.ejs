@@ -1,25 +1,17 @@
-<!-- Perfil Page -->
 <div class="min-h-screen bg-gray-50" x-data="perfilData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Meu Perfil</h1>
         <p class="text-gray-600">Gerencie suas informações pessoais e preferências</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Profile Info -->
         <div class="lg:col-span-2">
-          <!-- Personal Information -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
             <div class="p-6 border-b border-gray-200">
               <h2 class="text-lg font-semibold text-gray-900">Informações Pessoais</h2>
@@ -82,7 +74,6 @@
             </div>
           </div>
 
-          <!-- Change Password -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="p-6 border-b border-gray-200">
               <h2 class="text-lg font-semibold text-gray-900">Alterar Senha</h2>
@@ -129,9 +120,7 @@
           </div>
         </div>
 
-        <!-- Profile Sidebar -->
         <div class="space-y-6">
-          <!-- Profile Picture -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Foto do Perfil</h3>
             <div class="text-center">
@@ -144,7 +133,6 @@
             </div>
           </div>
 
-          <!-- Account Stats -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Estatísticas da Conta</h3>
             <div class="space-y-4">
@@ -169,7 +157,6 @@
             </div>
           </div>
 
-          <!-- Quick Actions -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
             <div class="space-y-3">

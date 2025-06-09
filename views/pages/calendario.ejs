@@ -1,16 +1,10 @@
-<!-- Calendário Page -->
 <div class="min-h-screen bg-gray-50" x-data="calendarioData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <div class="flex items-center justify-between">
           <div>
@@ -29,10 +23,8 @@
         </div>
       </div>
 
-      <!-- Calendar Controls -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
         <div class="flex items-center justify-between">
-          <!-- Navigation -->
           <div class="flex items-center space-x-4">
             <button 
               @click="previousMonth()"
@@ -62,7 +54,6 @@
             </button>
           </div>
 
-          <!-- View Toggle -->
           <div class="flex items-center space-x-2">
             <span class="text-sm text-gray-500">Visualização:</span>
             <select 
@@ -77,16 +68,13 @@
         </div>
       </div>
 
-      <!-- Calendar Grid -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <!-- Calendar Header -->
         <div class="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
           <template x-for="day in weekDays" :key="day">
             <div class="p-4 text-center text-sm font-medium text-gray-700" x-text="day"></div>
           </template>
         </div>
 
-        <!-- Calendar Body -->
         <div class="grid grid-cols-7">
           <template x-for="day in calendarDays" :key="day.date">
             <div 
@@ -97,7 +85,6 @@
                 'hover:bg-gray-50': day.isCurrentMonth && !day.isToday
               }"
             >
-              <!-- Day Number -->
               <div 
                 class="text-sm font-medium mb-1"
                 :class="{
@@ -108,7 +95,6 @@
                 x-text="day.dayNumber"
               ></div>
 
-              <!-- Reservations -->
               <div class="space-y-1">
                 <template x-for="reserva in getReservasForDay(day.date)" :key="reserva.id">
                   <div 
@@ -126,7 +112,6 @@
                 </template>
               </div>
 
-              <!-- Add Event Button -->
               <button 
                 x-show="day.isCurrentMonth"
                 @click="createReservation(day.date)"
@@ -141,7 +126,6 @@
         </div>
       </div>
 
-      <!-- Legend -->
       <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
         <h3 class="text-sm font-medium text-gray-900 mb-3">Legenda</h3>
         <div class="flex flex-wrap gap-4">
@@ -197,16 +181,12 @@
         const year = this.currentDate.getFullYear();
         const month = this.currentDate.getMonth();
         
-        // Primeiro dia do mês
         const firstDay = new Date(year, month, 1);
-        // Último dia do mês
         const lastDay = new Date(year, month + 1, 0);
         
-        // Primeiro dia da semana (domingo = 0)
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
         
-        // Último dia da semana
         const endDate = new Date(lastDay);
         endDate.setDate(endDate.getDate() + (6 - lastDay.getDay()));
         
@@ -258,7 +238,6 @@
       },
 
       viewReservation(reserva) {
-        // TODO: Implementar modal de detalhes da reserva
         alert(`Reserva: ${reserva.titulo}\nSala: ${reserva.sala_nome}\nStatus: ${reserva.status}`);
       }
     }

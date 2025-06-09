@@ -1,22 +1,18 @@
-<!-- Relatórios Page -->
 <div class="min-h-screen bg-gray-50" x-data="relatoriosData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
-    <%- include('../components/sidebar') %>
+    <%- include('../components/side      <div class="grid grid-cols-        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Relatórios e Analytics</h1>
         <p class="text-gray-600">Visualize estatísticas e relatórios do sistema de reservas</p>
       </div>
 
-      <!-- Report Filters -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
@@ -75,7 +71,6 @@
         </div>
       </div>
 
-      <!-- Key Metrics -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center">
@@ -138,9 +133,7 @@
         </div>
       </div>
 
-      <!-- Charts Row -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <!-- Usage by Room Type -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h3 class="text-lg font-semibold text-gray-900 mb-4">Uso por Tipo de Sala</h3>
           <div class="space-y-4">
@@ -161,7 +154,6 @@
           </div>
         </div>
 
-        <!-- Peak Hours -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h3 class="text-lg font-semibold text-gray-900 mb-4">Horários de Pico</h3>
           <div class="space-y-4">
@@ -183,9 +175,7 @@
         </div>
       </div>
 
-      <!-- Top Users and Rooms -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <!-- Top Users -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="p-6 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-900">Usuários Mais Ativos</h3>
@@ -218,7 +208,6 @@
           </div>
         </div>
 
-        <!-- Top Rooms -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="p-6 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-900">Salas Mais Utilizadas</h3>
@@ -252,7 +241,6 @@
         </div>
       </div>
 
-      <!-- Recent Activity -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="p-6 border-b border-gray-200">
           <h3 class="text-lg font-semibold text-gray-900">Atividade Recente</h3>
@@ -347,7 +335,6 @@
         try {
           this.loading = true;
           
-          // Simular dados para demonstração
           this.metrics = {
             totalReservas: 245,
             crescimentoReservas: 12,
@@ -404,7 +391,6 @@
       },
 
       exportReport() {
-        // TODO: Implementar exportação para PDF
         alert('Funcionalidade de exportação será implementada em breve!');
       }
     }

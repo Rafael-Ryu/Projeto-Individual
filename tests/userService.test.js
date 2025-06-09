@@ -1,5 +1,3 @@
-// tests/userService.test.js
-
 const userService = require('../services/userService');
 const db = require('../config/db');
 

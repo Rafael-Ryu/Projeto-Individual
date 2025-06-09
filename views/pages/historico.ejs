@@ -1,22 +1,15 @@
-<!-- Histórico Page -->
 <div class="min-h-screen bg-gray-50" x-data="historicoData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Histórico de Reservas</h1>
         <p class="text-gray-600">Visualize todas as suas reservas passadas e estatísticas</p>
       </div>
 
-      <!-- Statistics Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center">
@@ -75,10 +68,8 @@
         </div>
       </div>
 
-      <!-- Filters -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <!-- Period Filter -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Período</label>
             <select 
@@ -93,7 +84,6 @@
             </select>
           </div>
 
-          <!-- Status Filter -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
             <select 
@@ -106,7 +96,6 @@
             </select>
           </div>
 
-          <!-- Room Filter -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Sala</label>
             <select 
@@ -120,7 +109,6 @@
             </select>
           </div>
 
-          <!-- Search -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
             <input 
@@ -133,7 +121,6 @@
         </div>
       </div>
 
-      <!-- History Timeline -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="p-6 border-b border-gray-200">
           <h2 class="text-lg font-semibold text-gray-900">Linha do Tempo</h2>
@@ -145,14 +132,12 @@
               <template x-for="(reserva, index) in filteredReservas" :key="reserva.id">
                 <li>
                   <div class="relative pb-8">
-                    <!-- Timeline line -->
                     <span 
                       x-show="index !== filteredReservas.length - 1"
                       class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
                     ></span>
                     
                     <div class="relative flex space-x-3">
-                      <!-- Status Icon -->
                       <div>
                         <span 
                           class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white"
@@ -192,7 +177,6 @@
                         </span>
                       </div>
 
-                      <!-- Content -->
                       <div class="min-w-0 flex-1 pt-1.5">
                         <div class="flex items-center justify-between">
                           <div>
@@ -230,7 +214,6 @@
             </ul>
           </div>
 
-          <!-- Empty State -->
           <div x-show="filteredReservas.length === 0" class="text-center py-12">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -318,22 +301,18 @@
 
       get filteredReservas() {
         return this.reservas.filter(reserva => {
-          // Search filter
           if (this.filters.search && !reserva.titulo.toLowerCase().includes(this.filters.search.toLowerCase())) {
             return false;
           }
 
-          // Status filter
           if (this.filters.status && reserva.status !== this.filters.status) {
             return false;
           }
 
-          // Room filter
           if (this.filters.sala && reserva.sala_id !== this.filters.sala) {
             return false;
           }
 
-          // Period filter
           if (this.filters.periodo !== 'all') {
             const reservaDate = new Date(reserva.tempo_inicio);
             const now = new Date();

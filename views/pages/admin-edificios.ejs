@@ -1,16 +1,9 @@
-<!-- Admin Edifícios Page -->
 <div class="min-h-screen bg-gray-50" x-data="adminEdificiosData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
-    
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <div class="flex items-center justify-between">
           <div>
@@ -29,7 +22,6 @@
         </div>
       </div>
 
-      <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center">
@@ -89,7 +81,6 @@
         </div>
       </div>
 
-      <!-- Filters -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
@@ -124,11 +115,9 @@
         </div>
       </div>
 
-      <!-- Buildings Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <template x-for="edificio in filteredEdificios" :key="edificio.id">
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <!-- Building Image -->
             <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 relative">
               <div class="absolute inset-0 bg-black bg-opacity-20"></div>
               <div class="absolute bottom-4 left-4 text-white">
@@ -136,7 +125,6 @@
                 <p class="text-sm opacity-90" x-text="edificio.cidade + ', ' + edificio.estado"></p>
               </div>
               
-              <!-- Status Badge -->
               <div class="absolute top-4 right-4">
                 <span 
                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
@@ -146,7 +134,6 @@
               </div>
             </div>
 
-            <!-- Building Details -->
             <div class="p-6">
               <div class="space-y-3 mb-4">
                 <div class="flex justify-between text-sm">
@@ -167,7 +154,6 @@
                 </div>
               </div>
 
-              <!-- Actions -->
               <div class="flex space-x-2">
                 <button 
                   @click="editEdificio(edificio)"
@@ -191,7 +177,6 @@
           </div>
         </template>
 
-        <!-- Empty State -->
         <div x-show="filteredEdificios.length === 0" class="col-span-full text-center py-12">
           <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m5 0V9a2 2 0 012-2h2a2 2 0 012 2v12"></path>
@@ -201,7 +186,6 @@
         </div>
       </div>
 
-      <!-- Create/Edit Modal -->
       <div 
         x-show="showCreateModal || showEditModal" 
         x-transition:enter="ease-out duration-300"
@@ -366,7 +350,6 @@
           }
         } catch (error) {
           console.error('Erro ao carregar edifícios:', error);
-          // Dados simulados para demonstração
           this.edificios = [
             {
               id: 1,

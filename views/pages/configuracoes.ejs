@@ -1,26 +1,18 @@
-<!-- Configurações Page -->
 <div class="min-h-screen bg-gray-50" x-data="configuracoesData()">
 
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Configurações</h1>
         <p class="text-gray-600">Personalize sua experiência no sistema</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Settings Content -->
         <div class="lg:col-span-2 space-y-6">
-          <!-- Notification Settings -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="p-6 border-b border-gray-200">
               <h2 class="text-lg font-semibold text-gray-900">Notificações</h2>
@@ -62,7 +54,6 @@
             </div>
           </div>
 
-          <!-- Display Settings -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="p-6 border-b border-gray-200">
               <h2 class="text-lg font-semibold text-gray-900">Exibição</h2>
@@ -98,7 +89,6 @@
             </div>
           </div>
 
-          <!-- Calendar Settings -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="p-6 border-b border-gray-200">
               <h2 class="text-lg font-semibold text-gray-900">Calendário</h2>
@@ -143,7 +133,6 @@
 
 
 
-          <!-- Save Button -->
           <div class="flex justify-end">
             <button 
               @click="saveSettings()"
@@ -156,9 +145,7 @@
           </div>
         </div>
 
-        <!-- Settings Sidebar -->
         <div class="space-y-6">
-          <!-- Quick Settings -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Configurações Rápidas</h3>
             <div class="space-y-3">
@@ -183,7 +170,6 @@
             </div>
           </div>
 
-          <!-- Help -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Precisa de Ajuda?</h3>
             <p class="text-sm text-gray-600 mb-4">
@@ -205,19 +191,15 @@
 <script>
   function configuracoesData() {
     return {
-      loading: false,
-      settings: {
-        // Notificações
-        emailNotifications: true,
-        meetingReminders: true,
-        cancellationNotifications: true,
+      loading: false,        settings: {
+          emailNotifications: true,
+          meetingReminders: true,
+          cancellationNotifications: true,
 
-        // Exibição
-        language: 'pt-BR',
-        timezone: 'America/Sao_Paulo',
+          language: 'pt-BR',
+          timezone: 'America/Sao_Paulo',
 
-        // Calendário
-        defaultCalendarView: 'month',
+          defaultCalendarView: 'month',
         weekStartDay: '1',
         showWeekends: true
       },

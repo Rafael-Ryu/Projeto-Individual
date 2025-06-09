@@ -1,16 +1,10 @@
-<!-- Admin Usuários Page -->
 <div class="min-h-screen bg-gray-50" x-data="adminUsuariosData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <div class="flex items-center justify-between">
           <div>
@@ -29,7 +23,6 @@
         </div>
       </div>
 
-      <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center">
@@ -88,7 +81,6 @@
         </div>
       </div>
 
-      <!-- Filters -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
@@ -136,7 +128,6 @@
         </div>
       </div>
 
-      <!-- Users Table -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200">
@@ -205,7 +196,6 @@
           </table>
         </div>
 
-        <!-- Empty State -->
         <div x-show="filteredUsuarios.length === 0" class="text-center py-12">
           <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM9 3a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -215,7 +205,6 @@
         </div>
       </div>
 
-      <!-- Create/Edit Modal -->
       <div 
         x-show="showCreateModal || showEditModal" 
         x-transition:enter="ease-out duration-300"
@@ -444,7 +433,7 @@
       editUsuario(usuario) {
         this.editingUsuario = usuario;
         this.usuarioForm = { ...usuario };
-        delete this.usuarioForm.password; // Não incluir senha na edição
+        delete this.usuarioForm.password;
         this.showEditModal = true;
       },
 

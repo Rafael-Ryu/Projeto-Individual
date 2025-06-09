@@ -1,24 +1,16 @@
-<!-- Favoritos Page -->
 <div class="min-h-screen bg-gray-50" x-data="favoritosData()">
-  <!-- Header -->
   <%- include('../components/dashboard-header') %>
   
-  <!-- Main Content -->
   <div class="flex">
-    <!-- Sidebar -->
     <%- include('../components/sidebar') %>
     
-    <!-- Main Content Area -->
     <main class="flex-1 p-6">
-      <!-- Page Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Salas Favoritas</h1>
         <p class="text-gray-600">Suas salas mais utilizadas e marcadas como favoritas</p>
       </div>
 
-      <!-- Quick Actions -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <!-- Quick Reserve -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center space-x-3 mb-4">
             <div class="p-2 bg-blue-100 rounded-lg">
@@ -37,7 +29,6 @@
           </button>
         </div>
 
-        <!-- Most Used -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center space-x-3 mb-4">
             <div class="p-2 bg-green-100 rounded-lg">
@@ -51,7 +42,6 @@
           <p class="text-sm text-gray-500" x-text="mostUsedRoom ? mostUsedRoom.totalReservas + ' reservas' : 'Faça sua primeira reserva'"></p>
         </div>
 
-        <!-- Recent Favorite -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center space-x-3 mb-4">
             <div class="p-2 bg-red-100 rounded-lg">
@@ -66,7 +56,6 @@
         </div>
       </div>
 
-      <!-- Favorites List -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="p-6 border-b border-gray-200">
           <div class="flex items-center justify-between">
@@ -84,16 +73,13 @@
           <template x-for="sala in favoriteRooms" :key="sala.id">
             <div class="p-6 hover:bg-gray-50 transition-colors">
               <div class="flex items-center justify-between">
-                <!-- Room Info -->
                 <div class="flex items-center space-x-4">
-                  <!-- Room Icon -->
                   <div class="p-3 bg-blue-100 rounded-lg">
                     <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m5 0V9a2 2 0 012-2h2a2 2 0 012 2v12"></path>
                     </svg>
                   </div>
 
-                  <!-- Details -->
                   <div>
                     <h3 class="text-lg font-semibold text-gray-900" x-text="sala.nome"></h3>
                     <p class="text-gray-600" x-text="sala.localizacao"></p>
@@ -120,9 +106,7 @@
                   </div>
                 </div>
 
-                <!-- Actions -->
                 <div class="flex items-center space-x-3">
-                  <!-- Quick Reserve -->
                   <button 
                     @click="reservarSala(sala)"
                     class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -130,7 +114,6 @@
                     Reservar
                   </button>
 
-                  <!-- More Actions -->
                   <div class="relative" x-data="{ open: false }">
                     <button 
                       @click="open = !open"
@@ -189,7 +172,6 @@
             </div>
           </template>
 
-          <!-- Empty State -->
           <div x-show="favoriteRooms.length === 0" class="p-12 text-center">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
@@ -224,8 +206,6 @@
 
       async loadFavorites() {
         try {
-          // TODO: Implementar API de favoritos
-          // Por enquanto, dados simulados
           this.favoriteRooms = [
             {
               id: 1,
@@ -275,10 +255,8 @@
 
       async removerFavorito(sala) {
         if (confirm(`Remover "${sala.nome}" dos favoritos?`)) {
-          // TODO: Implementar API de remoção de favoritos
           this.favoriteRooms = this.favoriteRooms.filter(s => s.id !== sala.id);
           
-          // Atualizar estatísticas
           if (this.mostUsedRoom?.id === sala.id) {
             this.mostUsedRoom = this.favoriteRooms[0] || null;
           }
